@@ -1,0 +1,67 @@
+version: "3.9"
+services:
+  alinedb:
+    image: rickylopez/aline-db-rl:1.4
+    ports:
+      - "3307:3306"
+  aline-user:
+    image: rickylopez/aline-microservices:user
+    depends_on:
+      - alinedb
+    environment:
+      DB_HOST: 'alinedb' 
+    ports:
+      - "8070:8070"
+    command: mvn -f /server/ spring-boot:run -pl user-microservice
+  aline-underwriter:
+    image: rickylopez/aline-microservices:underwriter
+    depends_on:
+      - alinedb
+    environment:
+      DB_HOST: 'alinedb'
+    ports:
+      - "8071:8070"
+    command: mvn -f /server/ spring-boot:run -pl underwriter-microservice
+  aline-bank:
+    image: rickylopez/aline-microservices:bank
+    depends_on:
+      - alinedb
+    environment:
+      DB_HOST: 'alinedb'
+    ports:
+      - "8083:8083"
+    command: mvn -f /server/ spring-boot:run -pl bank-microservice
+  aline-transaction:
+    image: rickylopez/aline-microservices:transaction
+    depends_on:
+      - alinedb
+    environment:
+      DB_HOST: 'alinedb'
+    ports:
+      - "8073:8070"
+    command: mvn -f /server/ spring-boot:run -pl transaction-microservice
+  aline-gateway:
+    image: rickylopez/aline-microservices:gateway
+    ports:
+      - "8080:8080"
+  aline-admin:
+    image: rickylopez/aline-frontend:admin
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_BASEURL=http://host.docker.internal:8080
+      - REACT_APP_TOKEN_NAME=RATN
+      - EXTEND_ESLINT=true
+  aline-landing:
+    image: rickylopez/aline-frontend:landing
+    ports:
+      - "4200:80"
+    environment:
+      - PORT=4200
+      - REACT_APP_MEMBER_DASHBOARD_URL=http://host.docker.internal:3007
+      - REACT_APP_API=http://host.docker.internal:8080/api
+  aline-member:
+    image: rickylopez/aline-frontend:member
+    ports:
+      - "3007:80"
+    
