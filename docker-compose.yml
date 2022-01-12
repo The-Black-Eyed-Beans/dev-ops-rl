@@ -1,7 +1,9 @@
 version: "3.9"
 services:
   alinedb:
-    image: rickylopez/aline-db-rl:1.4
+    image: rickylopez/aline-db-rl:1.5
+    env_file:
+      - ./env-files/db.env
     ports:
       - "3307:3306"
   aline-user:
