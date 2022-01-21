@@ -1,0 +1,41 @@
+#user app config
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-deployment
+  labels:
+    app: user-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-microservice 
+  template:
+    metadata:
+      labels:
+        app: user-microservice
+    spec:
+      containers:
+        - name: user-microservice
+          image: rickylopez/aline-microservices:user1.1
+          ports:
+            - containerPort: 8070
+          envFrom:
+          - configMapRef:
+              name: microservice-configmap
+          - secretRef:
+              name: aline-secret
+--- #service config
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user-microservice 
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8070
+      targetPort: 8070
+      nodePort: 30001

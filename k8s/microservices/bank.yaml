@@ -1,0 +1,41 @@
+#bank app config
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-deployment
+  labels:
+    app: bank-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bank-microservice 
+  template:
+    metadata:
+      labels:
+        app: bank-microservice
+    spec:
+      containers:
+        - name: bank-microservice
+          image: rickylopez/aline-microservices:bank1.1
+          ports:
+            - containerPort: 8083
+          envFrom:
+          - configMapRef:
+              name: microservice-configmap
+          - secretRef:
+              name: aline-secret
+--- #service config
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank-service
+spec:
+  selector:
+    app: bank-microservice 
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8083
+      nodePort: 30004

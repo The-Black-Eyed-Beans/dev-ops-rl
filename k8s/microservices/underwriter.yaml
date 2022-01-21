@@ -1,0 +1,41 @@
+#underwriter app config
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: underwriter-deployment
+  labels:
+    app: underwriter-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: underwriter-microservice 
+  template:
+    metadata:
+      labels:
+        app: underwriter-microservice
+    spec:
+      containers:
+        - name: underwriter-microservice
+          image: rickylopez/aline-microservices:underwriter1.1
+          ports:
+            - containerPort: 8070
+          envFrom:
+          - configMapRef:
+              name: microservice-configmap
+          - secretRef:
+              name: aline-secret
+--- #service config
+apiVersion: v1
+kind: Service
+metadata:
+  name: underwriter-service
+spec:
+  selector:
+    app: underwriter-microservice 
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8070
+      targetPort: 8070
+      nodePort: 30002

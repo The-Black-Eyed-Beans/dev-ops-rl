@@ -1,0 +1,41 @@
+#transaction app config
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transaction-deployment
+  labels:
+    app: transaction-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transaction-microservice 
+  template:
+    metadata:
+      labels:
+        app: transaction-microservice
+    spec:
+      containers:
+        - name: transaction-microservice
+          image: rickylopez/aline-microservices:transaction1.1
+          ports:
+            - containerPort: 8070
+          envFrom:
+          - configMapRef:
+              name: microservice-configmap
+          - secretRef:
+              name: aline-secret
+--- #service config
+apiVersion: v1
+kind: Service
+metadata:
+  name: transaction-service
+spec:
+  selector:
+    app: transaction-microservice 
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8070
+      targetPort: 8070
+      nodePort: 30003

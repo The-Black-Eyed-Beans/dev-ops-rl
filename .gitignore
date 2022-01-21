@@ -1,2 +1,3 @@
 ### Environment Files ###
-env-files/*
+docker/env-files
+k8s/env

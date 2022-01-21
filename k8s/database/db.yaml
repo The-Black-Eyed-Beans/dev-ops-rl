@@ -1,0 +1,41 @@
+#database config
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+  labels:
+    app: aline-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aline-db 
+  template:
+    metadata:
+      labels:
+        app: aline-db
+    spec:
+      containers:
+        - name: user-microservice
+          image: rickylopez/aline-db-rl:1.5
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: aline-secret
+                  key: DB_PASSWORD
+---
+#database service config
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+spec:
+  selector:
+    app: aline-db
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
