@@ -26,12 +26,19 @@ spec:
                 secretKeyRef:
                   name: aline-secret
                   key: DB_PASSWORD
+          volumeMounts:
+          - name: mysql-persistent-storage
+            mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
 ---
 #database network policy config
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: deny-all
+  name: ingress
   namespace: default
 spec:
   podSelector:
