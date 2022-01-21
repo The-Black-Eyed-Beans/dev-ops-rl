@@ -27,6 +27,29 @@ spec:
                   name: aline-secret
                   key: DB_PASSWORD
 ---
+#database network policy config
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      name: aline-db
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: user-microservice
+          app: underwriter-microservice
+          app: transaction-microservice
+          app: bank-miroservice
+    ports:
+      - port: 3306
+---
 #database service config
 apiVersion: v1
 kind: Service
