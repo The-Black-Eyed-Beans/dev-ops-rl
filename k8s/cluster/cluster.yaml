@@ -6,7 +6,7 @@ metadata:
   region: us-east-2
 
 nodeGroups:
-  - name: ng-1
+  - name: rl-aline-cluster
     instanceType: t2.small
     desiredCapacity: 4
     volumeSize: 80
