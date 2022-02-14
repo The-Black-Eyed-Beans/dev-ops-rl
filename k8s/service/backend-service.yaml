@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-service
+  name: backend-service
 spec:
   selector:
-    app: user-microservice 
+    role: backend-service 
   type: LoadBalancer
   ports:
     - name: user
