@@ -7,19 +7,23 @@ spec:
     app: user-microservice 
   type: LoadBalancer
   ports:
-    - protocol: TCP
+    - name: user
+      protocol: TCP
       port: 8070
       targetPort: user
       nodePort: 30001
-    - protocol: TCP
+    - name: underwriter
+      protocol: TCP
       port: 8071
       targetPort: underwriter
       nodePort: 30002
-    - protocol: TCP
+    - name: transaction
+      protocol: TCP
       port: 8073
       targetPort: transaction
       nodePort: 30003
-    - protocol: TCP
+    - name: bank
+      protocol: TCP
       port: 8083
       targetPort: bank
       nodePort: 30004
