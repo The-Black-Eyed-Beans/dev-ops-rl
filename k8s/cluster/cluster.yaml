@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: rl-aline-cluster
+  name: rl-aline
   region: us-east-2
 
 nodeGroups:
