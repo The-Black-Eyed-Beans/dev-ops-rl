@@ -4,7 +4,7 @@ metadata:
   name: backend-service
 spec:
   selector:
-    role: backend-service 
+    role: backend
   type: LoadBalancer
   ports:
     - name: user
