@@ -11,19 +11,15 @@ spec:
       protocol: TCP
       port: 8070
       targetPort: user
-      nodePort: 30001
     - name: underwriter
       protocol: TCP
       port: 8071
       targetPort: underwriter
-      nodePort: 30002
     - name: transaction
       protocol: TCP
       port: 8073
       targetPort: transaction
-      nodePort: 30003
     - name: bank
       protocol: TCP
       port: 8083
       targetPort: bank
-      nodePort: 30004
