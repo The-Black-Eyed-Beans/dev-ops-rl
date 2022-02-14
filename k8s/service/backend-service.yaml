@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user-microservice 
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8070
+      targetPort: user
+      nodePort: 30001
+    - protocol: TCP
+      port: 8071
+      targetPort: underwriter
+      nodePort: 30002
+    - protocol: TCP
+      port: 8073
+      targetPort: transaction
+      nodePort: 30003
+    - protocol: TCP
+      port: 8083
+      targetPort: bank
+      nodePort: 30004
