@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-configmap
+data:
+  APP_PORT: "8080"
+  APP_SERVICE_HOST: "{{APP_SERVICE_HOST}}"
+  PORTAL_LANDING: "{{PORTAL_LANDING}}"
+  PORTAL_DASHBOARD: "{{PORTAL_DASHBOARD}}"
+  PORTAL_ADMIN: "{{PORTAL_ADMIN}}"
