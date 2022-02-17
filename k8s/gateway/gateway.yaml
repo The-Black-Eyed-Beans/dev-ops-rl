@@ -1,0 +1,28 @@
+#gateway app config
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+  labels:
+    app: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway 
+  template:
+    metadata:
+      labels:
+        app: gateway
+        role: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: 086620157175.dkr.ecr.us-east-1.amazonaws.com/gateway
+          ports:
+             - containerPort: 8080
+          envFrom:
+          - configMapRef:
+              name: gateway-configmap
+          - secretRef:
+              name: aline-secret

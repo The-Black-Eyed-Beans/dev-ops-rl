@@ -14,12 +14,14 @@ spec:
     metadata:
       labels:
         app: bank-microservice
+        role: backend
     spec:
       containers:
         - name: bank-microservice
           image: rickylopez/aline-microservices:bank1.1
           ports:
-            - containerPort: 8083
+            - name: bank
+              containerPort: 8083
           envFrom:
           - configMapRef:
               name: microservice-configmap
