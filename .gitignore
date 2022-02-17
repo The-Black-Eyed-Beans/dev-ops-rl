@@ -2,6 +2,7 @@
 docker/ecs/env-files
 docker/local/env-files
 k8s/env
+terraform/testing.tfvars
 
 ### Mac OS Metadata ###
 .DS_Store
