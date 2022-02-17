@@ -20,7 +20,7 @@ spec:
         - name: gateway
           image: 086620157175.dkr.ecr.us-east-1.amazonaws.com/gateway
           ports:
-             - containerPort: 8083
+             - containerPort: 8080
           envFrom:
           - configMapRef:
               name: gateway-configmap
