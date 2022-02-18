@@ -43,7 +43,7 @@ resource "aws_internet_gateway" "internet_gw" {
 
 resource "aws_nat_gateway" "nat_gw" {
 	
-	subnnet_id = aws_subnet.private_subnet.id
+	subnet_id = aws_subnet.private_subnet.id
     connectivity_type = "private"
 	tags = {
 		Name = "RL-nat-gw"
@@ -80,27 +80,27 @@ resource "aws_route_table" "rt" {
 resource "aws_route_table_association" "pub_subnet_rta" {
     
     subnet_id = aws_subnet.public_subnet.id
-    route_table = aws_route_table.rt.id
+    route_table_id = aws_route_table.rt.id
 
 }
 
 resource "aws_route_table_association" "priv_subnet_rta" {
     
     subnet_id = aws_subnet.private_subnet.id
-    route_table = aws_route_table.rt.id
+    route_table_id = aws_route_table.rt.id
 
 }
 
 resource "aws_route_table_association" "internet_gateway_rta" {
     
     gateway_id = aws_internet_gateway.internet_gw.id
-    route_table = aws_route_table.rt.id
+    route_table_id = aws_route_table.rt.id
 
 }
 
 resource "aws_route_table_association" "nat_gateway_rta" {
     
-    gateway_id = aws_internet_gateway.nat_gw.id
-    route_table = aws_route_table.rt.id
+    gateway_id = aws_nat_gateway.nat_gw.id
+    route_table_id = aws_route_table.rt.id
 
 }

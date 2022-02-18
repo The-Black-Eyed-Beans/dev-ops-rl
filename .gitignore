@@ -1,10 +1,9 @@
 ### Environment Files ###
 **/env
-*.env
+**.env
 docker/ecs/env-files
 docker/local/env-files
-
-terraform/testing.tfvars
+**.tfvars
 
 ### Mac OS Metadata ###
 .DS_Store
