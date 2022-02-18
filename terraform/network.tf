@@ -24,7 +24,7 @@ resource "aws_subnet" "public_subnet" {
 resource "aws_subnet" "private_subnet" {
 	
 	vpc_id = aws_vpc.main_vpc.id
-	cidr_block = var.private_subent_cidr_block
+	cidr_block = var.private_subnet_cidr_block
 	tags = {
 		Name = "Private_Subnet"
 	}
@@ -43,7 +43,8 @@ resource "aws_internet_gateway" "internet_gw" {
 
 resource "aws_nat_gateway" "nat_gw" {
 	
-	vpc_id = aws_vpc.main_vpc.id
+	subnnet_id = aws_subnet.private_subnet.id
+    connectivity_type = "private"
 	tags = {
 		Name = "RL-nat-gw"
 	}
