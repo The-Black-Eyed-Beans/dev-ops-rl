@@ -6,24 +6,10 @@ provider "aws" {
 	# region	 = $AWS_REGION
 }
 
-#create VPC structure, along with subnets.
-
-resource "aws_vpc" "main_vpc" {
-	cidr_block = var.VPC_cidr_block
-
-	enable_dns_hostnames = true 
-
-	tags = {
-		Name = "RL-Aline-VPC"
-	}
-}
-
-#resource "public subnet"
-
-
-#create S3 structure.
 
 #create EKS cluster and nodegroups.
+
+
 
 #create security groups.
 
