@@ -1,11 +1,3 @@
-provider "aws" {
-	#credentials provided by environment. Below is an example environment configuration.
-	# region = $AWS_REGION (optional)
-	# access_key = $AWS_ACCESS_KEY
-	# secret_key = $AWS_SECRET_KEY
-	# region	 = $AWS_REGION
-}
-
 #create VPC structure, along with subnets.
 
 resource "aws_vpc" "main_vpc" {
