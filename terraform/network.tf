@@ -17,6 +17,7 @@ resource "aws_subnet" "public_subnet" {
 	cidr_block = var.public_subnet_cidr_block
 	tags = {
 		Name = "Public_Subnet"
+		CLUSTER_NAME = "RL-Cluster"
 	}
 
 }
@@ -27,6 +28,7 @@ resource "aws_subnet" "private_subnet" {
 	cidr_block = var.private_subnet_cidr_block
 	tags = {
 		Name = "Private_Subnet"
+		CLUSTER_NAME = "RL-Cluster"
 	}
 }
 

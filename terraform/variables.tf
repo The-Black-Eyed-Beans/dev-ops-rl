@@ -1,4 +1,4 @@
-
+#Network Vars
 variable "VPC_cidr_block" {
     type = string
     description = "CIDR block used by VPC instance."
@@ -15,4 +15,18 @@ variable "public_subnet_cidr_block" {
     type = string
     description = ""
     default = "10.1.2.0/24"
+}
+
+#EKS Compute Vars
+
+variable "nodegroup_ami_type" {
+    type = string
+    description = ""
+    default = "ami-033b95fb8079dc481"
+}
+
+variable "nodegroup_instance_types" {
+    type = list
+    description = ""
+    default = ["t2.micro"]
 }
