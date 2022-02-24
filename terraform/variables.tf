@@ -54,5 +54,5 @@ variable "aws_secret_key" {
 variable "aws_region" {
     type = string
     description = ""
-    senstive = true
+    sensitive = true
 }
