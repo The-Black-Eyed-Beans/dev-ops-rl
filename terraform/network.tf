@@ -96,16 +96,16 @@ resource "aws_route_table_association" "priv_subnet_rta" {
 }
 
 
-# resource "aws_route_table_association" "internet_gateway_rta" {
+resource "aws_route_table_association" "internet_gateway_rta" {
     
-#     gateway_id = aws_internet_gateway.internet_gw.id
-#     route_table_id = aws_route_table.rt.id
+    gateway_id = aws_internet_gateway.internet_gw.id
+    route_table_id = aws_route_table.rt.id
 
-# }
+}
 
-# resource "aws_route_table_association" "nat_gateway_rta" {
+resource "aws_route_table_association" "nat_gateway_rta" {
     
-#     gateway_id = aws_nat_gateway.nat_gw.id
-#     route_table_id = aws_route_table.rt.id
+    gateway_id = aws_nat_gateway.nat_gw.id
+    route_table_id = aws_route_table.rt.id
 
-# }
+}
