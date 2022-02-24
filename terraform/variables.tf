@@ -19,12 +19,6 @@ variable "public_subnet_cidr_block" {
 
 #EKS Compute Vars
 
-variable "nodegroup_ami_type" {
-    type = string
-    description = ""
-    default = "ami-033b95fb8079dc481"
-}
-
 variable "nodegroup_instance_types" {
     type = list
     description = ""

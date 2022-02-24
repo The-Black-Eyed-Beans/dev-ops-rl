@@ -43,10 +43,17 @@ resource "aws_eks_node_group" "RL-pub-ng" {
 	cluster_name = aws_eks_cluster.RL-Cluster.name
 	node_group_name = "RL-pub-ng"
 	node_role_arn = aws_iam_role.RL-Nodegroup-Role.arn
-	subnet_ids = aws_subnet.public_subnet.id
+	subnet_ids = [aws_subnet.public_subnet.id]
 
-	ami_type = var.nodegroup_ami_type
-	instance_types = [var.nodegroup_instance_type]
+	scaling_config {
+		
+		desired_size = 2
+		max_size = 2
+		min_size = 1
+
+	}
+
+	instance_types = var.nodegroup_instance_types
 
 	
 }
