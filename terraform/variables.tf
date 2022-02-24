@@ -36,3 +36,23 @@ variable "nodegroup_instance_types" {
     description = ""
     default = ["t2.micro"]
 }
+
+#AWS Credentials, CHANGE LATER
+
+variable "aws_access_key" {
+    type = string
+    description = ""
+    sensitive = true
+}
+
+variable "aws_secret_key" {
+    type = string
+    description = ""
+    sensitive = true
+}
+
+variable "aws_region" {
+    type = string
+    description = ""
+    senstive = true
+}
