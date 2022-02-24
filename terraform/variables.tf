@@ -26,7 +26,7 @@ variable "public_subnet_availability_zone" {
 variable "private_subnet_availability_zone" {
     type = string
     description = ""
-    default = "us-west-1b"
+    default = "us-west-1c"
 }
 
 #EKS Compute Vars

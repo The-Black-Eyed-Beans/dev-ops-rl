@@ -16,6 +16,7 @@ resource "aws_subnet" "public_subnet" {
 	vpc_id = aws_vpc.main_vpc.id
 	cidr_block = var.public_subnet_cidr_block
 	availability_zone = var.public_subnet_availability_zone
+	map_public_ip_on_launch = true
 	tags = {
 		Name = "Public_Subnet"
 		CLUSTER_NAME = "RL-Cluster"
@@ -28,6 +29,7 @@ resource "aws_subnet" "private_subnet" {
 	vpc_id = aws_vpc.main_vpc.id
 	cidr_block = var.private_subnet_cidr_block
 	availability_zone = var.private_subnet_availability_zone
+	map_public_ip_on_launch = true
 	tags = {
 		Name = "Private_Subnet"
 		CLUSTER_NAME = "RL-Cluster"
@@ -96,16 +98,16 @@ resource "aws_route_table_association" "priv_subnet_rta" {
 }
 
 
-resource "aws_route_table_association" "internet_gateway_rta" {
+# resource "aws_route_table_association" "internet_gateway_rta" {
     
-    gateway_id = aws_internet_gateway.internet_gw.id
-    route_table_id = aws_route_table.rt.id
+#     gateway_id = aws_internet_gateway.internet_gw.id
+#     route_table_id = aws_route_table.rt.id
 
-}
+# }
 
-resource "aws_route_table_association" "nat_gateway_rta" {
+# resource "aws_route_table_association" "nat_gateway_rta" {
     
-    gateway_id = aws_nat_gateway.nat_gw.id
-    route_table_id = aws_route_table.rt.id
+#     gateway_id = aws_nat_gateway.nat_gw.id
+#     route_table_id = aws_route_table.rt.id
 
-}
+# }
