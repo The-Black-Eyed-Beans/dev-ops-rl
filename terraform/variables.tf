@@ -17,6 +17,18 @@ variable "public_subnet_cidr_block" {
     default = "10.1.2.0/24"
 }
 
+variable "public_subnet_availability_zone" {
+    type = string
+    description = ""
+    default = "us-west-1a"
+}
+
+variable "private_subnet_availability_zone" {
+    type = string
+    description = ""
+    default = "us-west-1b"
+}
+
 #EKS Compute Vars
 
 variable "nodegroup_instance_types" {
