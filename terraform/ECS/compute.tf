@@ -27,76 +27,78 @@ resource "aws_cloudwatch_log_group" "RL-log-group" {
     }
 }
 
-#Make Task Definitions for each microservice.
 
-resource "aws_ecs_task_definition" "RL-task-definition-user"{
-    family = "user"
-    container_definitions = 
-    network_mode = "bridge"
-}
+# #Launch
+# #Make Task Definitions for each microservice.
 
-resource "aws_ecs_task_definition" "RL-task-definition-transaction"{
-    family = "transaction"
-    container_definitions = 
-    network_mode = "bridge"
-}
+# resource "aws_ecs_task_definition" "RL-task-definition-user"{
+#     family = "user"
+#     container_definitions = 
+#     network_mode = "bridge"
+# }
 
-resource "aws_ecs_task_definition" "RL-task-definition-underwriter"{
-    family = "underwriter"
-    container_definitions = 
-    network_mode = "bridge"
-}
+# resource "aws_ecs_task_definition" "RL-task-definition-transaction"{
+#     family = "transaction"
+#     container_definitions = 
+#     network_mode = "bridge"
+# }
 
-resource "aws_ecs_task_definition" "RL-task-definition-bank"{
-    family = "bank"
-    container_definitions = 
-    network_mode = "bridge"
-}
+# resource "aws_ecs_task_definition" "RL-task-definition-underwriter"{
+#     family = "underwriter"
+#     container_definitions = 
+#     network_mode = "bridge"
+# }
 
-resource "aws_ecs_task_definition" "RL-task-definition-gateway"{
-    family = "gateway"
-    container_definitions = 
-    network_mode = "bridge"
-}
+# resource "aws_ecs_task_definition" "RL-task-definition-bank"{
+#     family = "bank"
+#     container_definitions = 
+#     network_mode = "bridge"
+# }
 
-#Make Services for each microservice.
+# resource "aws_ecs_task_definition" "RL-task-definition-gateway"{
+#     family = "gateway"
+#     container_definitions = 
+#     network_mode = "bridge"
+# }
 
-resource "aws_ecs_service" "RL-user-service" {
-    name = "RL-user-service"
-    cluster = aws_ecs_cluster.RL-ECS-Cluster.id
-    task_definition = aws_ecs_task_definition.RL-task-definition-user.arn
-    desired_count = 1
+# #Make Services for each microservice.
 
-}
+# resource "aws_ecs_service" "RL-user-service" {
+#     name = "RL-user-service"
+#     cluster = aws_ecs_cluster.RL-ECS-Cluster.id
+#     task_definition = aws_ecs_task_definition.RL-task-definition-user.arn
+#     desired_count = 1
 
-resource "aws_ecs_service" "RL-transaction-service" {
-    name = "RL-user-service"
-    cluster = aws_ecs_cluster.RL-ECS-Cluster.id
-    task_definition = aws_ecs_task_definition.RL-task-definition-transaction.arn
-    desired_count = 1
+# }
+
+# resource "aws_ecs_service" "RL-transaction-service" {
+#     name = "RL-user-service"
+#     cluster = aws_ecs_cluster.RL-ECS-Cluster.id
+#     task_definition = aws_ecs_task_definition.RL-task-definition-transaction.arn
+#     desired_count = 1
     
-}
+# }
 
-resource "aws_ecs_service" "RL-underwriter-service" {
-    name = "RL-user-service"
-    cluster = aws_ecs_cluster.RL-ECS-Cluster.id
-    task_definition = aws_ecs_task_definition.RL-task-definition-underwriter.arn
-    desired_count = 1
+# resource "aws_ecs_service" "RL-underwriter-service" {
+#     name = "RL-user-service"
+#     cluster = aws_ecs_cluster.RL-ECS-Cluster.id
+#     task_definition = aws_ecs_task_definition.RL-task-definition-underwriter.arn
+#     desired_count = 1
     
-}
+# }
 
-resource "aws_ecs_service" "RL-bank-service" {
-    name = "RL-user-service"
-    cluster = aws_ecs_cluster.RL-ECS-Cluster.id
-    task_definition = aws_ecs_task_definition.RL-task-definition-bank.arn
-    desired_count = 1
+# resource "aws_ecs_service" "RL-bank-service" {
+#     name = "RL-user-service"
+#     cluster = aws_ecs_cluster.RL-ECS-Cluster.id
+#     task_definition = aws_ecs_task_definition.RL-task-definition-bank.arn
+#     desired_count = 1
     
-}
+# }
 
-resource "aws_ecs_service" "RL-gateway-service" {
-    name = "RL-user-service"
-    cluster = aws_ecs_cluster.RL-ECS-Cluster.id
-    task_definition = aws_ecs_task_definition.RL-task-definition-gateway.arn
-    desired_count = 1
+# resource "aws_ecs_service" "RL-gateway-service" {
+#     name = "RL-user-service"
+#     cluster = aws_ecs_cluster.RL-ECS-Cluster.id
+#     task_definition = aws_ecs_task_definition.RL-task-definition-gateway.arn
+#     desired_count = 1
     
-}
+# }
