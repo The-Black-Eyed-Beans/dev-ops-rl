@@ -22,7 +22,7 @@ resource "aws_iam_role" "RL-ecsTaskExecutionRole" {
     }
 }
 
-resourcce "aws_iam_role_policy_attachment" "RL-ecsTaskExecutionRolePolicy" {
+resource "aws_iam_role_policy_attachment" "RL-ecsTaskExecutionRolePolicy" {
     role = aws_iam_role.RL-ecsTaskExecutionRole.name
     policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
