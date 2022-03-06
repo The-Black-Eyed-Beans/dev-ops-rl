@@ -1,0 +1,44 @@
+pipeline {
+    
+    agent any
+
+    parameters {
+
+        string(name: "AWS_REGION", defaultValue: "us-west-1", trim: true, description: "Parameter for AWS region.")
+        booleanParam(name: "destroy", defaultValue: "false", decsription: "paramter to determine whether to destroy terraform infrastructure or not.")
+        
+    }
+
+    environment {
+        AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
+        AWS_ACCESS_KEY = credentials('AWS_ACCESS_KEY')
+        AWS_SECRET_KEY = credentials('AWS_SECRET_KEY')
+    }
+
+    stages {
+
+        stage("Plan") {
+
+            steps{
+
+                sh 'cd terraform/EKS'
+                sh 'ls'
+                sh 'terraform plan -out=terrplan'
+
+            }
+
+        }
+
+        stage("Apply") {
+
+            steps{
+
+                sh 'terraform apply "terrplan" > "apply_${BUILD_ID}.txt"'
+
+            }
+
+        }
+
+    }
+
+}
