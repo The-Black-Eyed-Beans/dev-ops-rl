@@ -9,6 +9,15 @@ provider "aws" {
 	region = var.aws_region
 }
 
+
+backend "s3" {
+
+	bucket = "rl-terraform-s3"
+	key = "terraform/terraform.tfstate"
+	region = var.aws_region
+
+}
+
 #Create ECS cluster.
 
 resource "aws_ecs_cluster" "RL-ECS-Cluster" {

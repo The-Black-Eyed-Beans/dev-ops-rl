@@ -21,9 +21,13 @@ pipeline {
 
             steps{
 
-                sh 'cd terraform/EKS'
-                sh 'ls'
-                sh 'terraform plan -out=terrplan'
+                withCredentials([file(credentialsId: 'TFVars', variable: 'terraform.tfvars')]){
+
+                    sh "cp \$terraform.tfvars /terraform/EKS/terraform.tfvars"
+
+                }
+
+                sh 'cd terraform/EKS && terraform plan -out=terrplan'
 
             }
 
@@ -33,7 +37,7 @@ pipeline {
 
             steps{
 
-                sh 'terraform apply "terrplan" > "apply_${BUILD_ID}.txt"'
+                sh 'cd terraform/EKS && terraform apply "terrplan" > "apply_${BUILD_ID}.txt"'
 
             }
 
