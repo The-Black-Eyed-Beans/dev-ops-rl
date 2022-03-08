@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: user-microservice
-          image: rickylopez/aline-microservices:user1.1
+          image: 086620157175.dkr.ecr.us-east-1.amazonaws.com/user-microservice-rl
           ports:
             - name: user
               containerPort: 8070

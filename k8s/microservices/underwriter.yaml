@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: underwriter-microservice
-          image: rickylopez/aline-microservices:underwriter1.1
+          image: 086620157175.dkr.ecr.us-east-1.amazonaws.com/underwriter-microservice-rl
           ports:
             - name: underwriter
               containerPort: 8070
