@@ -52,7 +52,7 @@ pipeline {
 
         }
 
-        stage("Destroy")
+        stage("Destroy"){
 
             when { expression { !params.DESTROY} }
 
@@ -61,6 +61,7 @@ pipeline {
                 sh 'cd terraform/EKS && terraform destroy -force'
 
             }
+        }
 
     }
 
