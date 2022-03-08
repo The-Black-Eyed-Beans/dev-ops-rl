@@ -33,7 +33,7 @@ pipeline {
 
                 }
 
-                sh 'cd terraform/EKS && terraform plan -out=terrplan'
+                sh 'cd terraform/EKS && terraform init && terraform plan -out=terrplan'
 
             }
 
