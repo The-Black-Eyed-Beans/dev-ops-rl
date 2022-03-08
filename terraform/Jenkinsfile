@@ -21,6 +21,16 @@ pipeline {
 
     stages {
 
+        stage("Initialize") {
+
+            steps{
+
+                sh "cd terraform/EKS && terraform init"
+
+            }
+
+        }
+
         stage("Plan") {
 
             when { expression { !params.DESTROY} }
@@ -29,7 +39,7 @@ pipeline {
 
                 withCredentials([file(credentialsId: 'TFVars', variable: 'TFVARS')]){
 
-                    sh "cp \$TFVARS /terraform/EKS/terraform.tfvars"
+                    sh "cp \$TFVARS /terraform/EKS/"
 
                 }
 
