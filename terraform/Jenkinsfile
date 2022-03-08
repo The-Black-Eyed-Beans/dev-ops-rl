@@ -54,7 +54,7 @@ pipeline {
 
         stage("Destroy"){
 
-            when { expression { !params.DESTROY} }
+            when { expression { params.DESTROY} }
 
             steps {
 
