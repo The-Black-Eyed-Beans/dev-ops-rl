@@ -25,17 +25,17 @@ pipeline {
 
             when { expression { !params.DESTROY} }
 
-                steps{
+            steps{
 
-                    withCredentials([file(credentialsId: 'TFVars', variable: 'terraform.tfvars')]){
+                withCredentials([file(credentialsId: 'TFVars', variable: 'terraform.tfvars')]){
 
-                        sh "cp \$terraform.tfvars /terraform/EKS/terraform.tfvars"
-
-                    }
-
-                    sh 'cd terraform/EKS && terraform plan -out=terrplan'
+                    sh "cp \$terraform.tfvars /terraform/EKS/terraform.tfvars"
 
                 }
+
+                sh 'cd terraform/EKS && terraform plan -out=terrplan'
+
+            }
 
 
         }
@@ -44,11 +44,11 @@ pipeline {
 
             when { expression { !params.DESTROY} }
 
-                steps{
+            steps{
 
-                    sh 'cd terraform/EKS && terraform apply -auto-approve "terrplan" > "apply_${BUILD_ID}.txt"'
+                sh 'cd terraform/EKS && terraform apply -auto-approve "terrplan" > "apply_${BUILD_ID}.txt"'
 
-                }
+            }
 
         }
 
@@ -56,11 +56,11 @@ pipeline {
 
             when { expression { !params.DESTROY} }
 
-                steps {
+            steps {
 
-                    sh 'cd terraform/EKS && terraform destroy -force'
+                sh 'cd terraform/EKS && terraform destroy -force'
 
-                }
+            }
 
     }
 
