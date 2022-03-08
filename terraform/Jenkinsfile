@@ -40,7 +40,7 @@ pipeline {
                 withCredentials([file(credentialsId: 'TFVars', variable: 'TFVARS')]){
 
                     sh "ls"
-                    sh "cp \$TFVARS /terraform/EKS/terraform.tfvars"
+                    sh "cp \$TFVARS terraform/EKS/terraform.tfvars"
 
                 }
 
