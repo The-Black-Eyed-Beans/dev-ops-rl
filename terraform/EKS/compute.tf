@@ -9,12 +9,14 @@ provider "aws" {
 	region = var.aws_region
 }
 
-backend "s3" {
+terraform{
+    backend "s3" {
 
-	bucket = "rl-terraform-s3"
-	key = "terraform/terraform.tfstate"
-	region = var.aws_region
+        bucket = "rl-terraform-s3"
+        key = "terraform/terraform.tfstate"
+        region = var.aws_region
 
+    }
 }
 
 #create EKS cluster and nodegroups.

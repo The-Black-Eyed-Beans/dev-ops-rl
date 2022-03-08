@@ -10,12 +10,14 @@ provider "aws" {
 }
 
 
-backend "s3" {
+terraform{
+    backend "s3" {
 
-	bucket = "rl-terraform-s3"
-	key = "terraform/terraform.tfstate"
-	region = var.aws_region
+        bucket = "rl-terraform-s3"
+        key = "terraform/terraform.tfstate"
+        region = var.aws_region
 
+    }
 }
 
 #Create ECS cluster.
