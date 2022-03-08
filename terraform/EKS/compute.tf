@@ -14,7 +14,7 @@ terraform{
 
         bucket = "rl-terraform-s3"
         key = "terraform/terraform.tfstate"
-        region = var.aws_region
+        region = "us-west-1"
 
     }
 }
