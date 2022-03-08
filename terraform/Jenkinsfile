@@ -58,7 +58,7 @@ pipeline {
 
             steps {
 
-                sh 'cd terraform/EKS && terraform destroy -force'
+                sh 'cd terraform/EKS && terraform destroy -auto-approve'
 
             }
         }
