@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: underwriter-microservice
-          image: rickylopez/aline-microservices:underwriter1.1
+          image: {{IMAGE}}
           ports:
             - name: underwriter
               containerPort: 8070

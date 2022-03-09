@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: bank-microservice
-          image: rickylopez/aline-microservices:bank1.1
+          image: {{IMAGE}}
           ports:
             - name: bank
               containerPort: 8083

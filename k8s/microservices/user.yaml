@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: user-microservice
-          image: rickylopez/aline-microservices:user1.1
+          image: {{IMAGE}}
           ports:
             - name: user
               containerPort: 8070
