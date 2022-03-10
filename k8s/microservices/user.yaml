@@ -14,12 +14,14 @@ spec:
     metadata:
       labels:
         app: user-microservice
+        role: backend
     spec:
       containers:
         - name: user-microservice
           image: rickylopez/aline-microservices:user1.1
           ports:
-            - containerPort: 8070
+            - name: user
+              containerPort: 8070
           envFrom:
           - configMapRef:
               name: microservice-configmap

@@ -1,0 +1,65 @@
+version: "3.9"
+services:
+  aline-user:
+    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/user-microservice
+    restart: on-failure:3
+    environment:
+      - APP_PORT=8070
+    env_file:
+      - ./env-files/user.env
+    ports:
+      - "8070:8070"
+  aline-underwriter:
+    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/underwriter-microservice
+    restart: on-failure:3
+    environment:
+      - APP_PORT=8071    
+    env_file:
+      - ./env-files/underwriter.env
+    ports:
+      - "8071:8071"
+  aline-bank:
+    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/bank-microservice
+    restart: on-failure:3
+    environment:
+      - APP_PORT=8083    
+    env_file:
+      - ./env-files/bank.env
+    ports:
+      - "8083:8083"
+  aline-transaction:
+    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/transaction-microservice
+    restart: on-failure:3
+    environment:
+      - APP_PORT=8073    
+    env_file:
+      - ./env-files/transaction.env
+    ports:
+      - "8073:8073"
+
+      
+  # aline-gateway:
+  #   image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/gateway
+  #   ports:
+  #     - "8080:8080"
+  # aline-admin:
+  #   image: rickylopez/aline-frontend:admin
+  #   ports:
+  #     - "3000:80"
+  #   environment:
+  #     - REACT_APP_API_BASEURL=http://host.docker.internal:8080
+  #     - REACT_APP_TOKEN_NAME=RATN
+  #     - EXTEND_ESLINT=true
+  # aline-landing:
+  #   image: rickylopez/aline-frontend:landing
+  #   ports:
+  #     - "4200:80"
+  #   environment:
+  #     - PORT=4200
+  #     - REACT_APP_MEMBER_DASHBOARD_URL=http://host.docker.internal:3007
+  #     - REACT_APP_API=http://host.docker.internal:8080/api
+  # aline-member:
+  #   image: rickylopez/aline-frontend:member
+  #   ports:
+  #     - "3007:80"
+    

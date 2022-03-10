@@ -1,6 +1,0 @@
-### Environment Files ###
-docker/env-files
-k8s/env
-
-### Mac OS Metadata ###
-.DS_Store

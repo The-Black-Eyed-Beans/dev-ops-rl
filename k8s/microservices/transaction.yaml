@@ -14,12 +14,14 @@ spec:
     metadata:
       labels:
         app: transaction-microservice
+        role: backend
     spec:
       containers:
         - name: transaction-microservice
           image: rickylopez/aline-microservices:transaction1.1
           ports:
-            - containerPort: 8070
+            - name: transaction
+              containerPort: 8070
           envFrom:
           - configMapRef:
               name: microservice-configmap

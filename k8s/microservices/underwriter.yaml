@@ -14,12 +14,14 @@ spec:
     metadata:
       labels:
         app: underwriter-microservice
+        role: backend
     spec:
       containers:
         - name: underwriter-microservice
           image: rickylopez/aline-microservices:underwriter1.1
           ports:
-            - containerPort: 8070
+            - name: underwriter
+              containerPort: 8070
           envFrom:
           - configMapRef:
               name: microservice-configmap
