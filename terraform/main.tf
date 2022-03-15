@@ -31,4 +31,6 @@ module "alb" {
     source = "./modules/alb"
     public_subnets = aws_subnet.public_subnets.public_subnets
     vpc_id = aws_vpc.main_vpc.vpc_id
+
+    depends_on = [aws_vpc.main_vpc]
 }
