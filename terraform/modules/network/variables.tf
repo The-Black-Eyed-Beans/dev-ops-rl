@@ -5,12 +5,14 @@ variable "VPC_cidr_block" {
   default     = "10.1.0.0/16"
 }
 
+#potentially delete later
 variable "private_subnet_cidr_block" {
   type        = string
   description = ""
   default     = "10.1.1.0/24"
 }
 
+#potentially delete later
 variable "public_subnet_cidr_block" {
   type        = string
   description = ""

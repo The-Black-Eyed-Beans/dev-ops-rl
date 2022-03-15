@@ -25,10 +25,10 @@ pipeline {
 
                 withCredentials([file(credentialsId: 'TFVars', variable: 'TFVARS')]){
                     sh "ls"
-                    sh "cp \$TFVARS terraform/EKS/terraform.tfvars"
+                    sh "cp \$TFVARS terraform/terraform.tfvars"
                 }
 
-                sh "terraform init"
+                sh "cd terraform && terraform init"
 
             }
 
@@ -39,7 +39,7 @@ pipeline {
             when { expression { !params.DESTROY} }
 
             steps{
-                sh 'terraform init && terraform plan -out=terrplan'
+                sh 'cd terraform && terraform init && terraform plan -out=terrplan'
             }
 
 
@@ -50,7 +50,7 @@ pipeline {
             when { expression { !params.DESTROY} }
 
             steps{
-                sh 'terraform apply -auto-approve "terrplan" > "apply_result.txt"'
+                sh 'cd terraform && terraform apply -auto-approve "terrplan" > "apply_result.txt"'
             }
 
         }
@@ -60,7 +60,7 @@ pipeline {
             when { expression { params.DESTROY} }
 
             steps {
-                sh 'terraform destroy -auto-approve'
+                sh 'cd terraform && terraform destroy -auto-approve'
             }
         }
 
@@ -70,7 +70,7 @@ pipeline {
     post {
 
         cleanup {
-            sh "rm terraform/EKS/terraform.tfvars"
+            sh "rm terraform/terraform.tfvars"
         }
 
 
