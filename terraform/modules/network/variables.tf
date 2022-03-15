@@ -45,3 +45,8 @@ variable "public_subnet_cidr_blocks" {
   default     = ["10.1.3.0/24", "10.1.4.0/24"]
 }
 
+variable "availability_zones" {
+  type        = list(string)
+  description = ""
+  default     = ["us-west-1a", "us-west-1c"]
+}
