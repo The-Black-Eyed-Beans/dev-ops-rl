@@ -33,7 +33,7 @@ resource "aws_security_group" "RL-alb-sg" {
 
 resource "aws_lb_target_group" "RL-lb-target-group" {
     name = "RL-target-group"
-    port = [8070,8071,8072,8083]
+    port = 8070
     protocol = "HTTP"
     target_type = "instance"
     vpc_id = var.vpc_id
