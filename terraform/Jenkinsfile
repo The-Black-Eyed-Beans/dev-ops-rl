@@ -28,7 +28,7 @@ pipeline {
                     sh "cp \$TFVARS terraform/EKS/terraform.tfvars"
                 }
 
-                sh "cd terraform/EKS && terraform init"
+                sh "terraform init"
 
             }
 
@@ -39,7 +39,7 @@ pipeline {
             when { expression { !params.DESTROY} }
 
             steps{
-                sh 'cd terraform/EKS && terraform init && terraform plan -out=terrplan'
+                sh 'terraform init && terraform plan -out=terrplan'
             }
 
 
@@ -50,7 +50,7 @@ pipeline {
             when { expression { !params.DESTROY} }
 
             steps{
-                sh 'cd terraform/EKS && terraform apply -auto-approve "terrplan" > "apply_result.txt"'
+                sh 'terraform apply -auto-approve "terrplan" > "apply_result.txt"'
             }
 
         }
@@ -60,7 +60,7 @@ pipeline {
             when { expression { params.DESTROY} }
 
             steps {
-                sh 'cd terraform/EKS && terraform destroy -auto-approve'
+                sh 'terraform destroy -auto-approve'
             }
         }
 

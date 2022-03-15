@@ -23,8 +23,8 @@ terraform{
 module "network" {
     source = "./modules/network"
     VPC_cidr_block = var.VPC_cidr_block
-    private_subnet_cidr_block = var.private_subnet_cidr_block
-    public_subnet_cidr_block = var.public_subnet_cidr_block
+    private_subnet_cidr_blocks = var.private_subnet_cidr_blocks
+    public_subnet_cidr_blocks = var.public_subnet_cidr_blocks
     public_subnet_availability_zone = var.public_subnet_availability_zone
     private_subnet_availability_zone = var.private_subnet_availability_zone
 }
