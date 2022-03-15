@@ -36,7 +36,7 @@ resource "aws_lb_target_group" "RL-lb-target-group" {
     port = [8070,8071,8072,8083]
     protocol = "HTTP"
     target_type = "instance"
-    vpc_id = aws_vpc.main_vpc.id
+    vpc_id = var.vpc_id
 
     health_check {
         path = "/health"
