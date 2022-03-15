@@ -2,7 +2,7 @@ resource "aws_lb" "RL-alb" {
     name = "RL-alb"
     load_balancer_type = "application"
     internal = false
-    subnets = var.public_subnets
+    subnets = [for subnet in var.public_subnets : subnet.id]
 }
 
 resource "aws_security_group" "RL-alb-sg" {
