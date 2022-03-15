@@ -29,8 +29,8 @@ module "network" {
 
 module "alb" {
     source = "./modules/alb"
-    public_subnets = module.network.aws_subnet.public_subnets.public_subnets
-    vpc_id = module.network.aws_vpc.main_vpc.vpc_id
+    public_subnets = module.network.public_subnets
+    vpc_id = module.network.vpc_id
 
     depends_on = [module.network.aws_vpc]
 }
