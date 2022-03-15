@@ -43,3 +43,22 @@ variable "public_subnet_cidr_blocks" {
   default     = ["10.1.3.0/24", "10.1.4.0/24"]
 }
 
+#AWS Credentials, CHANGE LATER
+
+variable "aws_access_key" {
+    type = string
+    description = ""
+    sensitive = true
+}
+
+variable "aws_secret_key" {
+    type = string
+    description = ""
+    sensitive = true
+}
+
+variable "aws_region" {
+    type = string
+    description = ""
+    sensitive = true
+}
