@@ -12,11 +12,9 @@ provider "aws" {
 
 terraform{
     backend "s3" {
-
         bucket = "rl-terraform-s3"
         key = "terraform/terraform.tfstate"
         region = "us-west-1"
-
     }
 }
 
@@ -27,4 +25,10 @@ module "network" {
     public_subnet_cidr_blocks = var.public_subnet_cidr_blocks
     public_subnet_availability_zone = var.public_subnet_availability_zone
     private_subnet_availability_zone = var.private_subnet_availability_zone
+}
+
+module "alb" {
+    source = "./modules/alb"
+    public_subnets = module.network.aws_subnet.public_subnets.public_subnets
+    vpc_id = module.network.aws_vpc.main_vpc.vpc_id
 }
