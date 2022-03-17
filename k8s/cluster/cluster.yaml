@@ -2,13 +2,17 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: rl-aline
+  name: rl-aline-cluster
   region: us-east-2
+
+vpc:
+  id: "vpc-0f75bc83dca966918"
+
 
 nodeGroups:
   - name: rl-node-group-1
     instanceType: t2.small
-    desiredCapacity: 4
+    desiredCapacity: 2
     volumeSize: 80
     ssh:
       allow: false # will use ~/.ssh/id_rsa.pub as the default ssh key
