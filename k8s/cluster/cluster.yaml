@@ -2,12 +2,22 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: rl-aline-cluster
-  region: us-east-2
+  name: rl-aline
+  region: us-west-1
 
 vpc:
   id: "vpc-0f75bc83dca966918"
-
+  subnets:
+    private:
+      us-west-1a:
+        id: "subnet-093f71ebc9c61f2e9"
+      us-west-1c:
+        id: "subnet-0c15ff501670b378a"
+    public:
+      us-west-1a:
+        id: "subnet-093f71ebc9c61f2e9"
+      us-west-1c:
+        id: "subnet-027c8c424fbb254fc"
 
 nodeGroups:
   - name: rl-node-group-1
