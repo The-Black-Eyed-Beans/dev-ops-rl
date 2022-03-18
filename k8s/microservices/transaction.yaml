@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: transaction-microservice
-          image: 086620157175.dkr.ecr.us-east-1.amazonaws.com/transaction-microservice-rl
+          image: {{IMAGE}}
           ports:
             - name: transaction
               containerPort: 8070

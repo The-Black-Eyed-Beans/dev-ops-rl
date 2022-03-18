@@ -2,11 +2,13 @@ pipeline {
     
     agent any
 
-    parameters {
+    tools {
+        terraform "Terraform1.1.7"
+    }
 
+    parameters {
         string(name: "AWS_REGION", defaultValue: "us-west-1", trim: true, description: "Parameter for AWS region.")
-        booleanParam(name: "destroy", defaultValue: "false", decsription: "paramter to determine whether to destroy terraform infrastructure or not.")
-        
+        booleanParam(name: "DESTROY", defaultValue: "false", description: "Parameter to determine whether to destroy terraform infrastructure or not.")
     }
 
     environment {
@@ -17,27 +19,60 @@ pipeline {
 
     stages {
 
-        stage("Plan") {
+        stage("Initialize") {
 
             steps{
 
-                sh 'cd terraform/EKS'
-                sh 'ls'
-                sh 'terraform plan -out=terrplan'
+                withCredentials([file(credentialsId: 'TFVars', variable: 'TFVARS')]){
+                    sh "ls"
+                    sh "cp \$TFVARS terraform/EKS/terraform.tfvars"
+                }
+
+                sh "cd terraform/EKS && terraform init"
 
             }
+
+        }
+
+        stage("Plan") {
+
+            when { expression { !params.DESTROY} }
+
+            steps{
+                sh 'cd terraform/EKS && terraform init && terraform plan -out=terrplan'
+            }
+
 
         }
 
         stage("Apply") {
 
+            when { expression { !params.DESTROY} }
+
             steps{
-
-                sh 'terraform apply "terrplan" > "apply_${BUILD_ID}.txt"'
-
+                sh 'cd terraform/EKS && terraform apply -auto-approve "terrplan" > "apply_result.txt"'
             }
 
         }
+
+        stage("Destroy"){
+
+            when { expression { params.DESTROY} }
+
+            steps {
+                sh 'cd terraform/EKS && terraform destroy -auto-approve'
+            }
+        }
+
+
+    }
+
+    post {
+
+        cleanup {
+            sh "rm terraform/EKS/terraform.tfvars"
+        }
+
 
     }
 
