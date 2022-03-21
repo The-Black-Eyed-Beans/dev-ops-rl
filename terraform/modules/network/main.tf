@@ -67,7 +67,7 @@ resource "aws_nat_gateway" "nat_gws" {
 
   allocation_id = aws_eip.nat_ips[count.index].id
   subnet_id         = aws_subnet.public_subnets[count.index].id
-  connectivity_type = "private"
+  connectivity_type = "public"
   tags = {
     Name = "RL-nat-gw${count.index}"
   }
