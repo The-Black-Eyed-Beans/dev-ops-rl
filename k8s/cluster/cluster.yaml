@@ -6,18 +6,18 @@ metadata:
   region: us-west-1
 
 vpc:
-  id: "vpc-0f6804dd048a36d99"
+  id: "${VPC_ID}"
   subnets:
     private:
       us-west-1a:
-        id: "subnet-082d07aa57fb7951b"
+        id: "${PRIV_SUBNET_2}"
       us-west-1c:
-        id: "subnet-05950e55642c48687"
+        id: "${PRIV_SUBNET_2}"
     public:
       us-west-1a:
-        id: "subnet-0e5434ad06532d827"
+        id: "${PUB_SUBNET_1}"
       us-west-1c:
-        id: "subnet-01ea4c0f541fbb1da"
+        id: "${PUB_SUBNET_2}"
 
 nodeGroups:
   - name: rl-node-group-1
