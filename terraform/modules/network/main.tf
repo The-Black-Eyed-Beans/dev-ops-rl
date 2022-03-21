@@ -26,7 +26,8 @@ resource "aws_subnet" "public_subnets" {
   map_public_ip_on_launch = true
   tags = {
     Name         = "RL-Public_Subnet-${count.index}"
-    CLUSTER_NAME = "RL-Cluster"
+    "kubernetes.io/cluster/eks" = "shared"
+    "kubernetes.io/role/elb" = 1
   }
 }
 
@@ -39,7 +40,8 @@ resource "aws_subnet" "private_subnets" {
   map_public_ip_on_launch = true
   tags = {
     Name         = "RL-Private_Subnet-${count.index}"
-    CLUSTER_NAME = "RL-Cluster"
+    "kubernetes.io/cluster/eks" = "shared"
+    "kubernetes.io/role/internal-elb" = 1
   }
 }
 
