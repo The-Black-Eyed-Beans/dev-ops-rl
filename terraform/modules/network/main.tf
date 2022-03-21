@@ -45,7 +45,7 @@ resource "aws_subnet" "private_subnets" {
   }
 }
 
-#create internet and NAT gateway.
+#create internet and NAT gateways.
 
 resource "aws_internet_gateway" "internet_gw" {
   vpc_id = aws_vpc.main_vpc.id
@@ -54,42 +54,72 @@ resource "aws_internet_gateway" "internet_gw" {
   }
 }
 
-resource "aws_nat_gateway" "nat_gw" {
-  subnet_id         = aws_subnet.public_subnets[0].id #will always put the NAT gateway in the first public subnet created. 
+#create EIPS for NAT gateways.
+
+resource "aws_eip" "nat_ips" {
+  count = length(var.public_subnet_cidr_blocks)
+
+  depends_on = [aws_internet_gateway.internet_gw]
+}
+
+resource "aws_nat_gateway" "nat_gws" {
+  count = length(var.public_subnet_cidr_blocks)
+
+  allocation_id = aws_eip.nat_ips[count.index].id
+  subnet_id         = aws_subnet.public_subnets[count.index].id
   connectivity_type = "private"
   tags = {
-    Name = "RL-nat-gw"
+    Name = "RL-nat-gw${count.index}"
   }
 
   depends_on = [aws_internet_gateway.internet_gw]
 }
 
+
+
 #create route tables.
 
 resource "aws_route_table" "pub_rt" {
   vpc_id = aws_vpc.main_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.internet_gw.id
+  }
+
   tags = {
     Name = "RL-pub-rt"
   }
+
+
 }
 
-resource "aws_route_table" "private_rt" {
+resource "aws_route_table" "private_rts" {
+  count = length(var.public_subnet_cidr_blocks)
+
   vpc_id = aws_vpc.main_vpc.id
   tags = {
     Name = "RL-private-rt"
   }
+
+  route {
+    cidr_block = "0.0.0.0/0"
+
+    nat_gateway_id = aws_nat_gateway.nat_gws[count.index]
+  }
+
 }
 
 #associate subnets and gateways with route table.
 
-resource "aws_route_table_association" "pub_subnet_rta" {
+resource "aws_route_table_association" "pub_subnet_rtas" {
   count          = length(var.public_subnet_cidr_blocks)
   subnet_id      = aws_subnet.public_subnets[count.index].id
   route_table_id = aws_route_table.pub_rt.id
 }
 
-resource "aws_route_table_association" "priv_subnet_rta" {
+resource "aws_route_table_association" "priv_subnet_rtas" {
   count          = length(var.private_subnet_cidr_blocks)
   subnet_id      = aws_subnet.private_subnets[count.index].id
-  route_table_id = aws_route_table.private_rt.id
+  route_table_id = aws_route_table.private_rts[count.index].id
 }
