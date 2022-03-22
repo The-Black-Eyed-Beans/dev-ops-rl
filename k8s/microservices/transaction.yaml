@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: transaction-microservice
-          image: {{IMAGE}}
+          image: $TRANSACTION_IMAGE
           ports:
             - name: transaction
               containerPort: 8070

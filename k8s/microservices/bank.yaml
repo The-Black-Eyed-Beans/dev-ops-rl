@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: bank-microservice
-          image: {{IMAGE}}
+          image: $BANK_IMAGE
           ports:
             - name: bank
               containerPort: 8083

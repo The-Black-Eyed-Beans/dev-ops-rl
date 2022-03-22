@@ -10,14 +10,14 @@ vpc:
   subnets:
     private:
       us-west-1a:
-        id: "${PRIV_SUBNET_2}"
+        id: "${PRIV_SUBNET_0}"
       us-west-1c:
-        id: "${PRIV_SUBNET_2}"
+        id: "${PRIV_SUBNET_1}"
     public:
       us-west-1a:
-        id: "${PUB_SUBNET_1}"
+        id: "${PUB_SUBNET_0}"
       us-west-1c:
-        id: "${PUB_SUBNET_2}"
+        id: "${PUB_SUBNET_1}"
 
 nodeGroups:
   - name: rl-node-group-1

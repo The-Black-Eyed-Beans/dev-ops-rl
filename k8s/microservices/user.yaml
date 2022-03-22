@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: user-microservice
-          image: {{IMAGE}}
+          image: $USER_IMAGE
           ports:
             - name: user
               containerPort: 8070
