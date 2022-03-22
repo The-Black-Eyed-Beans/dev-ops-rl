@@ -29,8 +29,6 @@ done
 kubectl apply -f service/
 
 #inject env vars into gateway-configmap and apply.
-envsubst < gateway/gateway-configmap.yaml | kubectl apply -f -
-
-#create gateway deployment and service.
-kubectl apply -f gateway/gateway.yaml && kubectl apply -f gateway/gateway-service.yaml
+for FILE in gateway/* ; do
+    envsubst < "gateway/$FILE" | kubectl apply -f -
 
