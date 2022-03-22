@@ -14,7 +14,7 @@ set -o pipefail
 source .env
 
 #inject env vars into cluster configuration, and apply.
-envsubst < cluster.yaml | eksctl create cluster -f -
+envsubst < cluster/cluster.yaml | eksctl create cluster -f -
 
 
 #create environment resources. 

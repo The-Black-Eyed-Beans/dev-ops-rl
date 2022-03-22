@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     role: backend
-  type: LoadBalancer
+  type: NodePort
   ports:
     - name: user
       protocol: TCP
