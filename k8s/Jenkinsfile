@@ -1,0 +1,44 @@
+pipeline {
+    
+    agent any
+
+    parameters {
+        string(name: "VPC_ID", description: "Parameter for VPC id.")
+        string(name: "PRIV_SUBNET_0", description: "Parameter for private subnet id #0. (us-West-1a)")
+        string(name: "PRIV_SUBNET_1", description: "Parameter for private subnet id #1. (us-West-1c)")
+        string(name: "PUB_SUBNET_0", description: "Parameter for public subnet id #0. (us-West-1a)")
+        string(name: "PUB_SUBNET_1", description: "Parameter for public subnet id #1. (us-West-1c)")
+    }
+
+    environment {
+        AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
+        AWS_ACCESS_KEY = credentials('AWS_ACCESS_KEY')
+        AWS_SECRET_KEY = credentials('AWS_SECRET_KEY')
+        VPC_ID = "${params.VPC_ID}"
+        PRIV_SUBNET_0 = "${params.PRIV_SUBNET_0}"
+        PRIV_SUBNET_1 = "${params.PRIV_SUBNET_1}"
+        PUB_SUBNET_0 = "${params.PUB_SUBNET_0}"
+        PUB_SUBNET_1 = "${params.PUB_SUBNET_1}"
+    }
+
+    stages {
+
+        stage("Process") {
+            steps{   
+                sh "envsubst < cluster/cluster.yaml > cluster.yaml"
+                cat "cluster/cluster.yaml"
+            }
+        }
+
+        stage("Update Cluster"){
+            steps{
+                withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
+                    sh "eksctl create cluster -f cluster/cluster.yaml"
+                }
+            }
+        }
+
+
+    }
+
+}
