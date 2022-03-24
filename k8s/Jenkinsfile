@@ -27,7 +27,7 @@ pipeline {
             steps{
                 dir('k8s/cluster'){   
                     sh "envsubst < cluster.yaml > cluster.yaml"
-                    cat "cluster.yaml"
+                    sh "cat cluster.yaml"
                 }
             }
         }
