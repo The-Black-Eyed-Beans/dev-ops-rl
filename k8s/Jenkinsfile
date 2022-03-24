@@ -49,8 +49,8 @@ pipeline {
             steps{
                 dir('k8s'){
                     withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
-                        s3Download(file: 'k8s/env/aline-secret.yaml' , bucket: 'rl-secrets' )
-                        s3Download(file: 'k8s/env/microservice-configamp.yaml' , bucket: 'rl-secrets')
+                        s3Download(file: 'aline-secret.yaml' , bucket: 'rl-secrets' )
+                        s3Download(file: 'microservice-configmap.yaml' , bucket: 'rl-secrets')
                         
                         sh """
                         kubectl apply -f aline-secret.yaml
