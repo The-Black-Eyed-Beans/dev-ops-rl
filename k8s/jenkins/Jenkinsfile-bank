@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-            USER_IMAGE = "${params.IMAGE}"
+            BANK_IMAGE = "${params.IMAGE}"
     }
 
     stages {
@@ -16,7 +16,7 @@ pipeline {
         stage("Process") {
             steps{
                 dir('k8s/microservices'){  
-                    sh "envsubst < user.yaml"
+                    sh "envsubst < bank.yaml"
                 }
             }
         }
@@ -33,7 +33,7 @@ pipeline {
             steps{
                 dir('k8s/microservices'){
                     withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
-                        sh "envsubst < user.yaml | kubectl apply -f -"
+                        sh "envsubst < bank.yaml | kubectl apply -f -"
                     }
                 }
             }

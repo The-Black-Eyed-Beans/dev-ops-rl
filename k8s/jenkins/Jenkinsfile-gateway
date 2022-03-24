@@ -8,15 +8,15 @@ pipeline {
     }
 
     environment {
-            USER_IMAGE = "${params.IMAGE}"
+            GATEWAY_IMAGE = "${params.IMAGE}"
     }
 
     stages {
 
         stage("Process") {
             steps{
-                dir('k8s/microservices'){  
-                    sh "envsubst < user.yaml"
+                dir('k8s/GATEWAY'){  
+                    sh "envsubst < gateway.yaml"
                 }
             }
         }
@@ -31,9 +31,13 @@ pipeline {
 
         stage("Update Deployment"){
             steps{
-                dir('k8s/microservices'){
+                dir('k8s/gateway'){
                     withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
-                        sh "envsubst < user.yaml | kubectl apply -f -"
+                        sh """
+                        kubectl apply -f gateway-configmap.yaml
+                        kubectl apply -f gateway-service.yaml
+                        envsubst < gateway.yaml | kubectl apply -f -
+                        """
                     }
                 }
             }
