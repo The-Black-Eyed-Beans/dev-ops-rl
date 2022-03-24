@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: "IMAGE", default:"$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:$(git rev-parse HEAD)" description: "URL for the ECR image.")
+        string(name: "IMAGE", default:"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/$REPO_NAME:latest" description: "URL for the ECR image.")
     }
 
     environment {

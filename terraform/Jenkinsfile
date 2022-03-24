@@ -7,7 +7,6 @@ pipeline {
     }
 
     parameters {
-        string(name: "AWS_REGION", defaultValue: "us-west-1", trim: true, description: "Parameter for AWS region.")
         booleanParam(name: "DESTROY", defaultValue: "false", description: "Parameter to determine whether to destroy terraform infrastructure or not.")
     }
 
