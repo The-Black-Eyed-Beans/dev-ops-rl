@@ -1,0 +1,42 @@
+pipeline {
+    
+    agent any
+
+    parameters {
+        string(name: "IMAGE", description: "URL for the ECR image.")
+    }
+
+    environment {
+            IMAGE = "${params.IMAGE}"
+    }
+
+    stages {
+
+        stage("Process") {
+            steps{
+                dir('k8s/microservices'){  
+                    sh "envsubst < user.yaml"
+                }
+            }
+        }
+
+        stage("Configure"){
+            steps{
+                withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
+                    sh "aws eks update-kubeconfig --name rl-aline"
+                }
+            }
+        }
+
+        stage("Update Deployment"){
+            steps{
+                withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
+                    sh "kubectl apply -f user.yaml"
+                }
+            }
+        }
+
+
+    }
+
+}
