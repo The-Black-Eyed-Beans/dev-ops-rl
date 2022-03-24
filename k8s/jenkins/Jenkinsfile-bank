@@ -4,11 +4,12 @@ pipeline {
 
     parameters {
         string(name: "IMAGE", description: "URL for the ECR image.")
-        choice(name: 'microservice', choices: ['user', 'underwriter', 'bank', 'transaction', 'gateway'], description: 'selection for what microservice is being updated.') }
     }
 
     environment {
             BANK_IMAGE = "${params.IMAGE}"
+            AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
+            AWS_REGION = credentials('AWS_Region')
     }
 
     stages {
@@ -23,7 +24,7 @@ pipeline {
 
         stage("Configure"){
             steps{
-                withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
+                withAWS(credentials: 'AWS_Ricky', region: credentials('AWS_Region')){
                     sh "aws eks update-kubeconfig --name rl-aline"
                 }
             }
@@ -32,7 +33,7 @@ pipeline {
         stage("Update Deployment"){
             steps{
                 dir('k8s/microservices'){
-                    withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
+                    withAWS(credentials: 'AWS_Ricky', region: credentials('AWS_Region')){
                         sh "envsubst < bank.yaml | kubectl apply -f -"
                     }
                 }

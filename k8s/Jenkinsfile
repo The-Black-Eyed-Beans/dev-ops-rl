@@ -34,8 +34,25 @@ pipeline {
         stage("Update Cluster"){
             steps{
                 dir('k8s/cluster'){
-                    withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
+                    withAWS(credentials: 'AWS_Ricky', region: credentials('AWS_Region')){
                         sh "envsubst < cluster.yaml | eksctl create cluster -f -"
+                    }
+                }
+            }
+        }
+
+        stage("Apply K8s Infrastructure"){
+            steps{
+                dir('k8s'){
+                    withAWS(credentials: 'AWS_Ricky', region: credentials('AWS_Region')){
+                        s3Download(file: 'k8s/env/aline-secret.yaml' , bucket: 'rl-secrets' , path: '.' )
+                        s3Download(file: 'k8s/env/microservice-configamp.yaml' , bucket: 'rl-secrets' , path: '.')
+                        
+                        sh """
+                        kubectl apply -f aline-secret.yaml
+                        kubectl apply -f microservice-configmap.yaml
+                        kubectl apply -f service/
+                        """
                     }
                 }
             }
@@ -44,4 +61,12 @@ pipeline {
 
     }
 
+
+    post {
+        cleanup {
+            dir('k8s'){
+                sh "rm aline-secret.yaml microservice-configmap.yaml"
+            }
+        }
+    }
 }
