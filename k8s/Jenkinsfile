@@ -3,6 +3,7 @@ pipeline {
     agent any
 
     parameters {
+        booleanParam(name: "createCluster", defaultValue:"false", description: "Parameter to determine whether cluster should be created.")
         string(name: "VPC_ID", description: "Parameter for VPC id.")
         string(name: "PRIV_SUBNET_0", description: "Parameter for private subnet id #0. (us-West-1a)")
         string(name: "PRIV_SUBNET_1", description: "Parameter for private subnet id #1. (us-West-1c)")
@@ -32,11 +33,13 @@ pipeline {
             }
         }
 
-        stage("Update Cluster"){
+        stage("Create Cluster"){
+            when{expression{params.CreateCluster}}
+            
             steps{
                 dir('k8s/cluster'){
                     withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
-                        sh "envsubst < cluster.yaml | eksctl create cluster -f -"
+                        sh "envsubst < cluster.yaml | eksctl upgrade cluster -f -"
                     }
                 }
             }
@@ -45,7 +48,7 @@ pipeline {
         stage("Apply K8s Infrastructure"){
             steps{
                 dir('k8s'){
-                    withAWS(credentials: 'AWS_Ricky', region: credentials('AWS_Region')){
+                    withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
                         s3Download(file: 'k8s/env/aline-secret.yaml' , bucket: 'rl-secrets' , path: '.' )
                         s3Download(file: 'k8s/env/microservice-configamp.yaml' , bucket: 'rl-secrets' , path: '.')
                         
