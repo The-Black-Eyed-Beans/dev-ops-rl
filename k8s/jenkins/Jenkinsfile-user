@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-            IMAGE = "${params.IMAGE}"
+            USER_IMAGE = "${params.IMAGE}"
     }
 
     stages {
@@ -30,8 +30,10 @@ pipeline {
 
         stage("Update Deployment"){
             steps{
-                withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
-                    sh "kubectl apply -f user.yaml"
+                dir('k8s/microservices'){
+                    withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
+                        sh "envsubst < user.yaml | kubectl apply -f -"
+                    }
                 }
             }
         }
