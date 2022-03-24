@@ -26,8 +26,7 @@ pipeline {
         stage("Process") {
             steps{
                 dir('k8s/cluster'){   
-                    sh "envsubst < cluster.yaml > cluster.yaml"
-                    sh "cat cluster.yaml"
+                    sh "envsubst < cluster.yaml"
                 }
             }
         }
@@ -36,7 +35,7 @@ pipeline {
             steps{
                 dir('k8s/cluster'){
                     withAWS(credentials: 'AWS_Ricky', region: 'us-west-1'){
-                        sh "eksctl create cluster -f cluster.yaml"
+                        sh "envsubst < cluster.yaml | eksctl create cluster -f -"
                     }
                 }
             }
