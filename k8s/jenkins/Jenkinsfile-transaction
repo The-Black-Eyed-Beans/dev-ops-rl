@@ -32,7 +32,7 @@ pipeline {
                     withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
                         sh '''
                         export TRANSACTION_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest"
-                        envsubst < tranasaction.yaml | kubectl apply -f -
+                        envsubst < transaction.yaml | kubectl apply -f -
                         '''
                     }
                 }
