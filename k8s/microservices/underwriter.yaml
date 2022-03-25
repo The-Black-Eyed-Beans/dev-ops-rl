@@ -19,6 +19,7 @@ spec:
       containers:
         - name: underwriter-microservice
           image: $UNDERWRITER_IMAGE
+          imagePullPolicy: Always
           ports:
             - name: underwriter
               containerPort: 8070
