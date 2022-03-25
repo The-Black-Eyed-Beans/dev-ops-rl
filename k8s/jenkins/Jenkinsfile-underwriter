@@ -20,7 +20,7 @@ pipeline {
 
         stage("Configure"){
             steps{
-                withAWS(credentials: 'AWS_Ricky', region: credentials('AWS_Region')){
+                withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
                     sh "aws eks update-kubeconfig --name rl-aline"
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
         stage("Update Deployment"){
             steps{
                 dir('k8s/microservices'){
-                    withAWS(credentials: 'AWS_Ricky', region: credentials('AWS_Region')){
+                    withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
                         sh '''
                         export UNDERWRITER_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest"
                         envsubst < underwriter.yaml | kubectl apply -f -
