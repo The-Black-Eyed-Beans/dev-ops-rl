@@ -28,17 +28,3 @@ spec:
               name: microservice-configmap
           - secretRef:
               name: aline-secret
---- #service config
-apiVersion: v1
-kind: Service
-metadata:
-  name: underwriter-service
-spec:
-  selector:
-    app: underwriter-microservice 
-  type: NodePort
-  ports:
-    - protocol: TCP
-      port: 8070
-      targetPort: 8070
-      nodePort: 30002

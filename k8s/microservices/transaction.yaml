@@ -19,6 +19,7 @@ spec:
       containers:
         - name: transaction-microservice
           image: $TRANSACTION_IMAGE
+          imagePullPolicy: Always
           ports:
             - name: transaction
               containerPort: 8070
@@ -27,17 +28,3 @@ spec:
               name: microservice-configmap
           - secretRef:
               name: aline-secret
---- #service config
-apiVersion: v1
-kind: Service
-metadata:
-  name: transaction-service
-spec:
-  selector:
-    app: transaction-microservice 
-  type: NodePort
-  ports:
-    - protocol: TCP
-      port: 8070
-      targetPort: 8070
-      nodePort: 30003

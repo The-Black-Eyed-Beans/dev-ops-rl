@@ -19,6 +19,7 @@ spec:
       containers:
         - name: gateway
           image: $GATEWAY_IMAGE
+          imagePullPolicy: Always
           ports:
              - containerPort: 8080
           envFrom:

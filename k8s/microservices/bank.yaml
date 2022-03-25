@@ -19,6 +19,7 @@ spec:
       containers:
         - name: bank-microservice
           image: $BANK_IMAGE
+          imagePullPolicy: Always
           ports:
             - name: bank
               containerPort: 8083
@@ -27,17 +28,3 @@ spec:
               name: microservice-configmap
           - secretRef:
               name: aline-secret
---- #service config
-apiVersion: v1
-kind: Service
-metadata:
-  name: bank-service
-spec:
-  selector:
-    app: bank-microservice 
-  type: NodePort
-  ports:
-    - protocol: TCP
-      port: 8083
-      targetPort: 8083
-      nodePort: 30004
