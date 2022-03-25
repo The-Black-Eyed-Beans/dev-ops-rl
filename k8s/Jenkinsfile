@@ -68,7 +68,7 @@ pipeline {
     post {
         cleanup {
             dir('k8s'){
-                sh "echo a | rmdir secrets/"
+                sh "rmdir -f secrets/"
             }
         }
     }
