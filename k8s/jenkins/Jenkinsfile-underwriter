@@ -1,15 +1,11 @@
 pipeline {
     
     agent any
-
-    parameters {
-        string(name: "IMAGE", description: "URL for the ECR image.") }
-    }
-
+    
     environment {
-            UNDERWRITER_IMAGE = "${params.IMAGE}"
             AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
             AWS_REGION = credentials('AWS_Region')
+            REPO_NAME = "underwriter-microservice-rl"
     }
 
     stages {
@@ -34,7 +30,10 @@ pipeline {
             steps{
                 dir('k8s/microservices'){
                     withAWS(credentials: 'AWS_Ricky', region: credentials('AWS_Region')){
-                        sh "envsubst < underwriter.yaml | kubectl apply -f -"
+                        sh '''
+                        export UNDERWRITER_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest"
+                        envsubst < underwriter.yaml | kubectl apply -f -
+                        '''
                     }
                 }
             }
