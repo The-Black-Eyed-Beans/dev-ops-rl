@@ -68,7 +68,7 @@ pipeline {
     post {
         cleanup {
             dir('k8s'){
-                sh "rm aline-secret.yaml microservice-configmap.yaml"
+                sh "echo a | rmdir secrets/"
             }
         }
     }
