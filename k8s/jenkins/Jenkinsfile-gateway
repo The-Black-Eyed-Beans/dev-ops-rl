@@ -30,12 +30,12 @@ pipeline {
             steps{
                 dir('k8s/gateway'){
                     withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
-                        sh """
+                        sh '''
                         export GATEWAY_IMAGE="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest" 
                         kubectl apply -f gateway-configmap.yaml
                         kubectl apply -f gateway-service.yaml
                         envsubst < gateway.yaml | kubectl apply -f -
-                        """
+                        '''
                     }
                 }
             }
