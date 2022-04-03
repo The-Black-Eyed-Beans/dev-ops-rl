@@ -1,7 +1,9 @@
 version: "3.9"
+x-aws-vpc: "${VPC_ID}"
+x-aws-loadbalancer: ${AWS_ALB}
 services:
   aline-user:
-    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/user-microservice
+    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/user-microservice-rl:${COMMIT_HASH}
     restart: on-failure:3
     environment:
       - APP_PORT=8070
@@ -10,7 +12,7 @@ services:
     ports:
       - "8070:8070"
   aline-underwriter:
-    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/underwriter-microservice
+    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/underwriter-microservice-rl:${COMMIT_HASH}
     restart: on-failure:3
     environment:
       - APP_PORT=8071    
@@ -19,7 +21,7 @@ services:
     ports:
       - "8071:8071"
   aline-bank:
-    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/bank-microservice
+    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/bank-microservice-rl:${COMMIT_HASH}
     restart: on-failure:3
     environment:
       - APP_PORT=8083    
@@ -28,7 +30,7 @@ services:
     ports:
       - "8083:8083"
   aline-transaction:
-    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/transaction-microservice
+    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/transaction-microservice-rl:${COMMIT_HASH}
     restart: on-failure:3
     environment:
       - APP_PORT=8073    
@@ -36,12 +38,13 @@ services:
       - ./env-files/transaction.env
     ports:
       - "8073:8073"
-
-      
-  # aline-gateway:
-  #   image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/gateway
-  #   ports:
-  #     - "8080:8080"
+  aline-gateway:
+    image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/gateway-rl:${COMMIT_HASH}
+    restart: on-failure:3
+    env_file:
+      - ./env-files/gateway.env
+    ports:
+      - "8080:8080"
   # aline-admin:
   #   image: rickylopez/aline-frontend:admin
   #   ports:
