@@ -34,7 +34,7 @@ pipeline {
         }
 
         stage("Create Cluster"){
-            when{params.CreateCluster true}
+            when{expression{params.CreateCluster == true}}
 
             steps{
                 dir('k8s/cluster'){
