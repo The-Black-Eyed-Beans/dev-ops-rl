@@ -39,7 +39,7 @@ pipeline {
             steps{
                 dir('k8s/cluster'){
                     withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
-                        sh "envsubst < cluster.yaml | eksctl upgrade cluster -f -"
+                        sh "envsubst < cluster.yaml | eksctl create cluster -f -"
                     }
                 }
             }
