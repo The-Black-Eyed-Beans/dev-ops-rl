@@ -1,0 +1,56 @@
+
+pipeline {
+    
+    agent any
+
+    parameters {
+        string(name: "VPC_ID", description: "Parameter for VPC id.")
+        string(name: "ALB_ID", description: "Parameter for ALB id.")
+    }
+    
+    environment {
+            AWS_ID = credentials('AWS_ACCOUNT_ID')
+            AWS_REGION = credentials('AWS_Region')
+            MIRCO_NAME = "${params.MICRO_NAME}"
+            VPC_ID = "${params.VPC_ID}"
+            ALB_ID = "${params.ALB_ID}"
+            IMAGE_TAG = "${params.IMAGE_TAG}"
+    }
+
+    stages {
+
+        stage("Configure"){
+            steps{
+                withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
+                    sh 'aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"'
+                }
+            }
+        }
+
+        stage("Image Update") {
+            when{expression{return params.microUpdate}}
+
+            steps{
+                dir('docker/ecs/microservices'){  
+                    sh "docker pull aline-$MICRO_NAME"
+                }
+            }
+        }
+
+        stage("Update Deployment"){
+            steps{
+                dir('docker/ecs'){
+                    withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
+                        sh '''
+                        docker compose pull && docker compose up --project-name rl-aline
+                        '''
+                    }
+                }
+            }
+        }
+
+
+    }
+
+
+}
