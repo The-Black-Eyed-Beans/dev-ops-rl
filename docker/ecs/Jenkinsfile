@@ -41,7 +41,7 @@ pipeline {
                 dir('docker/ecs'){
                     withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
                         sh '''
-                        docker compose up --project-name rl-aline
+                        docker compose --project-name rl-aline up 
                         '''
                     }
                 }
