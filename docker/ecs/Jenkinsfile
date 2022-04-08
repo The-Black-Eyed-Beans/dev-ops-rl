@@ -32,7 +32,8 @@ pipeline {
         stage("Image Update") {
             when{not {environment name: 'BUILD_NAME' , value: 'ECS'}} //runs only if pipeline is a microservice update pipeline.
             steps{
-                dir('docker/ecs/microservices'){  
+                dir('docker/ecs/microservices'){
+                    sh 'printenv'  
                     sh "docker pull aline-$MICRO_NAME"
                 }
             }
