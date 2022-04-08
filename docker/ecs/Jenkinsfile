@@ -26,7 +26,7 @@ pipeline {
         }
 
         stage("Image Update") {
-            when{not {environment name: 'BUILD_NAME' , value: 'rl-folder/Infrastructure/ECS'}} //runs only if pipeline is a microservice update pipeline.
+            when{not {environment name: 'JOB_NAME' , value: 'rl-folder/Infrastructure/ECS'}} //runs only if pipeline is a microservice update pipeline.
             steps{
                 dir('docker/ecs/microservices'){
                     sh 'printenv'  
