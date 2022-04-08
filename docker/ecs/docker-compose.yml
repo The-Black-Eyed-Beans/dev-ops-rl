@@ -11,6 +11,8 @@ services:
       - ./env-files/user.env
     ports:
       - "8070:8070"
+      - target: 8070
+        x-aws-protocol: http
   aline-underwriter:
     image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/underwriter-microservice-rl:${IMAGE_TAG}
     restart: on-failure:3
@@ -20,6 +22,8 @@ services:
       - ./env-files/underwriter.env
     ports:
       - "8071:8071"
+      - target: 8071
+        x-aws-protocol: http      
   aline-bank:
     image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/bank-microservice-rl:${IMAGE_TAG}
     restart: on-failure:3
@@ -29,6 +33,8 @@ services:
       - ./env-files/bank.env
     ports:
       - "8083:8083"
+      - target: 8083
+        x-aws-protocol: http
   aline-transaction:
     image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/transaction-microservice-rl:${IMAGE_TAG}
     restart: on-failure:3
@@ -38,6 +44,8 @@ services:
       - ./env-files/transaction.env
     ports:
       - "8073:8073"
+      - target: 8073
+        x-aws-protocol: http
   aline-gateway:
     image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/gateway-rl:${IMAGE_TAG}
     restart: on-failure:3
@@ -45,6 +53,8 @@ services:
       - ./env-files/gateway.env
     ports:
       - "8080:8080"
+      - target: 8080
+        x-aws-protocol: http
   # aline-admin:
   #   image: rickylopez/aline-frontend:admin
   #   ports:
