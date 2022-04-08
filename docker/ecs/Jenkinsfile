@@ -33,7 +33,7 @@ pipeline {
                 withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
                     dir('docker/ecs/microservices'){
                         sh 'printenv'  
-                        sh 'aws ecs update-service --cluster rl-aline --service "aline$(MICRO_NAME)Service" --force-new-deployment'
+                        sh 'aws ecs update-service --cluster rl-aline --service "aline${MICRO_NAME}Service" --force-new-deployment'
                     }
                 }
             }
