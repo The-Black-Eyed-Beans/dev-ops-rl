@@ -54,8 +54,8 @@ pipeline {
 
     post {
         cleanup {
-            sh 'rmdir --ignore-fail-on-non-empty secrets/'
-            sh 'rmdir --ignore-fail-on-non-empty docker/ecs/env-files/'
+            sh 'rm -rf secrets/'
+            sh 'rm -rf docker/ecs/env-files/'
         }
     }
 

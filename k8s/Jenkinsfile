@@ -68,7 +68,7 @@ pipeline {
     post {
         cleanup {
             dir('k8s'){
-                sh "rmdir --ignore-fail-on-non-empty secrets/"
+                sh "rm -rf secrets/"
             }
         }
     }
