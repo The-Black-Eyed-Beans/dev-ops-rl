@@ -1,6 +1,6 @@
 version: "3.9"
 x-aws-vpc: "${VPC_ID}"
-x-aws-loadbalancer: "${AWS_ALB}"
+#x-aws-loadbalancer: "${AWS_ALB}"
 services:
   aline-user:
     image: ${AWS_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/user-microservice-rl:${IMAGE_TAG}
