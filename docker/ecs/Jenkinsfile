@@ -4,8 +4,8 @@ pipeline {
     agent any
 
     parameters {
-        string(name: "VPC_ID", description: "Parameter for VPC id.")
-        string(name: "AWS_ALB", description: "Parameter for ALB id.")
+        string(name: "VPC_ID", default: 'none', description: "Parameter for VPC id.")
+        string(name: "AWS_ALB", default: 'none', description: "Parameter for ALB id.")
     }
     
     environment {
