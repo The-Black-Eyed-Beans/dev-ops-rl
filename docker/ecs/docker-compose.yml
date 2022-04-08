@@ -55,23 +55,23 @@ services:
       #- "8080:8080"
       - target: 8080
         x-aws-protocol: http
-  x-aws-cloudformation:
-    Resources:
-      AlineuserService:
-        Properties:
-          ServiceName: AlineuserService
-      AlinebankService:
-        Properties:
-          ServiceName: AlinebankService
-      AlinetransactionService:
-        Properties:
-          ServiceName: AlinetransactionService
-      AlineunderwriterService:
-        Properties:
-          ServiceName: AlineunderwriterService
-      AlinegatewayService:
-        Properties:
-          ServiceName: AlinegatewayService
+x-aws-cloudformation:
+  Resources:
+    AlineuserService:
+      Properties:
+        ServiceName: AlineuserService
+    AlinebankService:
+      Properties:
+        ServiceName: AlinebankService
+    AlinetransactionService:
+      Properties:
+        ServiceName: AlinetransactionService
+    AlineunderwriterService:
+      Properties:
+        ServiceName: AlineunderwriterService
+    AlinegatewayService:
+      Properties:
+        ServiceName: AlinegatewayService
   # aline-admin:
   #   image: rickylopez/aline-frontend:admin
   #   ports:
