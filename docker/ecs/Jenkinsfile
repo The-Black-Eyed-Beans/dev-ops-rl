@@ -11,6 +11,7 @@ pipeline {
     environment {
             AWS_ID = credentials('AWS_ACCOUNT_ID')
             AWS_REGION = credentials('AWS_Region')
+            AWS_PROFILE = 'default'
     }
 
     stages {
