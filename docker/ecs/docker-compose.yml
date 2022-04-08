@@ -10,7 +10,7 @@ services:
     env_file:
       - ./env-files/user.env
     ports:
-      - "8070:8070"
+      #- "8070:8070"
       - target: 8070
         x-aws-protocol: http
   aline-underwriter:
@@ -21,7 +21,7 @@ services:
     env_file:
       - ./env-files/underwriter.env
     ports:
-      - "8071:8071"
+      #- "8071:8071"
       - target: 8071
         x-aws-protocol: http      
   aline-bank:
@@ -32,7 +32,7 @@ services:
     env_file:
       - ./env-files/bank.env
     ports:
-      - "8083:8083"
+      #- "8083:8083"
       - target: 8083
         x-aws-protocol: http
   aline-transaction:
@@ -43,7 +43,7 @@ services:
     env_file:
       - ./env-files/transaction.env
     ports:
-      - "8073:8073"
+      #- "8073:8073"
       - target: 8073
         x-aws-protocol: http
   aline-gateway:
@@ -52,7 +52,7 @@ services:
     env_file:
       - ./env-files/gateway.env
     ports:
-      - "8080:8080"
+      #- "8080:8080"
       - target: 8080
         x-aws-protocol: http
   # aline-admin:
