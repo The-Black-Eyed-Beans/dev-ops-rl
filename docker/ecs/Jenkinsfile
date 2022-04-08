@@ -22,14 +22,15 @@ pipeline {
         stage("Configure"){
             steps{
                 withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
+                    s3Download(file: 'secrets', bucket: 'rl-secrets', force: "true")
+                    sh 'mv secrets/docker/env-files docker/ecs/'
                     sh 'aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"'
                 }
             }
         }
 
         stage("Image Update") {
-            when{expression{return params.microUpdate}}
-
+            when{not {environment name: 'BUILD_NAME' , value: 'ECS'}} //runs only if pipeline is a microservice update pipeline.
             steps{
                 dir('docker/ecs/microservices'){  
                     sh "docker pull aline-$MICRO_NAME"
@@ -45,6 +46,15 @@ pipeline {
                         docker compose pull && docker compose up --project-name rl-aline
                         '''
                     }
+                }
+            }
+        }
+
+        post {
+            cleanup {
+                dir('k8s'){
+                    sh 'rmdir --ignore-fail-on-non-empty secrets/'
+                    sh 'rmdir --ignore-fail-on-non-empty docker/ecs/env-files/'
                 }
             }
         }
