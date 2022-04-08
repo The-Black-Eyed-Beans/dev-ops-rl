@@ -21,6 +21,7 @@ pipeline {
                     s3Download(file: 'secrets', bucket: 'rl-secrets', force: "true")
                     sh 'mv secrets/docker/env-files docker/ecs/'
                     sh 'aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin "$AWS_ID.dkr.ecr.$AWS_REGION.amazonaws.com"'
+                    sh 'docker context use rl-ecs'
                 }
             }
         }
