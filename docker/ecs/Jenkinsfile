@@ -11,10 +11,6 @@ pipeline {
     environment {
             AWS_ID = credentials('AWS_ACCOUNT_ID')
             AWS_REGION = credentials('AWS_Region')
-            MIRCO_NAME = "${params.MICRO_NAME}"
-            VPC_ID = "${params.VPC_ID}"
-            ALB_ID = "${params.ALB_ID}"
-            IMAGE_TAG = "${params.IMAGE_TAG}"
     }
 
     stages {
@@ -30,7 +26,7 @@ pipeline {
         }
 
         stage("Image Update") {
-            when{not {environment name: 'BUILD_NAME' , value: 'ECS'}} //runs only if pipeline is a microservice update pipeline.
+            when{not {environment name: 'BUILD_NAME' , value: 'rl-folder/Infrastructure/ECS'}} //runs only if pipeline is a microservice update pipeline.
             steps{
                 dir('docker/ecs/microservices'){
                     sh 'printenv'  
