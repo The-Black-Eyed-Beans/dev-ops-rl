@@ -30,9 +30,11 @@ pipeline {
         stage("Image Update") {
             when{not {environment name: 'JOB_NAME' , value: 'rl-folder/Infrastructure/ECS'}} //runs only if pipeline is a microservice update pipeline.
             steps{
-                dir('docker/ecs/microservices'){
-                    sh 'printenv'  
-                    sh "docker pull aline-$MICRO_NAME"
+                withAWS(crednetials: 'AWS_Ricky', region: "$AWS_REGION"){
+                    dir('docker/ecs/microservices'){
+                        sh 'printenv'  
+                        sh 'aws ecs update-service --cluster rl-aline --service "aline$(MIRCO_NAME)Service" --force-new-deployment'
+                    }
                 }
             }
         }
@@ -40,11 +42,9 @@ pipeline {
         stage("Update Deployment"){
             steps{
                 dir('docker/ecs'){
-                    withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
-                        sh '''
-                        docker compose --project-name rl-aline up 
-                        '''
-                    }
+                    sh '''
+                    docker compose --project-name rl-aline up 
+                    '''
                 }
             }
         }
