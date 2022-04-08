@@ -41,6 +41,7 @@ pipeline {
         }
 
         stage("Update Deployment"){
+            when{environment name: 'JOB_NAME' , value: 'rl-folder/Infrastructure/ECS'}  //runs only if pipeline is not a microservice update pipeline.
             steps{
                 dir('docker/ecs'){
                     sh '''
