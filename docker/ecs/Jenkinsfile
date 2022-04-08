@@ -5,7 +5,7 @@ pipeline {
 
     parameters {
         string(name: "VPC_ID", description: "Parameter for VPC id.")
-        string(name: "ALB_ID", description: "Parameter for ALB id.")
+        string(name: "AWS_ALB", description: "Parameter for ALB id.")
     }
     
     environment {
@@ -41,7 +41,7 @@ pipeline {
                 dir('docker/ecs'){
                     withAWS(credentials: 'AWS_Ricky', region: "$AWS_REGION"){
                         sh '''
-                        docker compose pull && docker compose up --project-name rl-aline
+                        docker compose up --project-name rl-aline
                         '''
                     }
                 }
