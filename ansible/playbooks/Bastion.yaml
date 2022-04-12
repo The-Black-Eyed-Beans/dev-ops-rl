@@ -11,7 +11,7 @@
     image:  ami-04a50faf2a2ec1901
     wait: yes
     region: us-west-1
-    subnet: subnet-082d07aa57fb7951b
+    subnet: subnet-0e5434ad06532d827
     group:
       - default
       - RL-BastHost-SG
@@ -50,9 +50,11 @@
             port: 22
             delay: 10
             timeout: 600
+      tags: ['never', 'ec2-create']
       
       # - name: Configure EC2 Instance.
       #   block: 
+      #   tags: ['always', 'ec2-configure']
   
 
   
