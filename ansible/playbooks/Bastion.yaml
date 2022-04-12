@@ -37,13 +37,13 @@
 
         - name: Add bastion to host group.
           add_host:
-            hostname: "{{ item.public_ip }}"
+            hostname: "{{ ec2.public_ip }}"
             groupname: launched
           
         - name: Wait for SSH port to be available.
           local_action:
             module: wait_for
-            host: "{{ item.public_ip }}"
+            host: "{{ ec2.public_ip }}"
             port: 22
             delay: 10
             timeout: 120
