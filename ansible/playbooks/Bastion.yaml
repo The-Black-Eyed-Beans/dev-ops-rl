@@ -54,6 +54,17 @@
       
     - name: Configure EC2 Instance.
       block: 
+        - name: Install yum-utils.
+          yum:
+            name: yum-utils
+    
+        - name: Add HashiCorp Linux repo.
+          ansible.builtin.shell: sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+
+        - name: Install Terraform.
+          yum:
+            name: terraform
+
       tags: ['always', 'ec2-configure']
   
 
