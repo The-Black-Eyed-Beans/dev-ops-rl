@@ -12,7 +12,9 @@
     wait: yes
     region: us-west-1
     subnet: subnet-082d07aa57fb7951b
-    groups: ['default', 'RL-BastHost-SG']
+    group:
+      - default
+      - RL-BastHost-SG
 
   tasks:
 
@@ -22,7 +24,7 @@
           ec2:
             region: "{{ region }}" 
             key_name: "{{ keypair }}"
-            group: "{{ groups }}"
+            group: "{{ group }}"
             instance_type: "{{ instance_type }}"
             image: "{{ image }}"
             wait: "{{ wait }}"
