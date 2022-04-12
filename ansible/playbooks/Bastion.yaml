@@ -17,22 +17,22 @@
     - name: Create EC2 Instance.
       block:
         - name: Launch bastion host.
-        ec2:
-          region: {{ region }}
-          key_name: {{ keypair }}
-          group: default
-          instance_type: {{ instance_type }}
-          image: {{ image }}
-          wait: {{ wait }}
-          wait_timeout: 500
-          count: 1
-          instance_tags:
-            name: RL-BastHost
-          monitoring: yes
-          vpc_subnet_id: {{ subnet }}
-          assign_public_ip: yes
-        register: ec2
-        delegate_to: localhost
+          ec2:
+            region: {{ region }}
+            key_name: {{ keypair }}
+            group: default
+            instance_type: {{ instance_type }}
+            image: {{ image }}
+            wait: {{ wait }}
+            wait_timeout: 500
+            count: 1
+            instance_tags:
+              name: RL-BastHost
+            monitoring: yes
+            vpc_subnet_id: {{ subnet }}
+            assign_public_ip: yes
+          register: ec2
+          delegate_to: localhost
 
         - name: Add bastion to host group.
           add_host:
