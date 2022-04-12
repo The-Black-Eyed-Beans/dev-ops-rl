@@ -1,5 +1,5 @@
 ---
-- name: provisioning EC2 instances using Ansible
+- name: provisioning EC2 bastion server using Ansible
   hosts: localhost
   connection: local
   gather_facts: False
