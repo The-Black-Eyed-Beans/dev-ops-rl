@@ -12,6 +12,9 @@
     wait: yes
     region: us-west-1
     subnet: subnet-082d07aa57fb7951b
+    groups:
+      - default
+      - RL-BastHost-SG
 
   tasks:
 
@@ -21,7 +24,7 @@
           ec2:
             region: "{{ region }}" 
             key_name: "{{ keypair }}"
-            group: default
+            group: "{{ groups }}"
             instance_type: "{{ instance_type }}"
             image: "{{ image }}"
             wait: "{{ wait }}"
@@ -46,7 +49,7 @@
             host: "{{ ec2.instances[0].public_ip }}"
             port: 22
             delay: 10
-            timeout: 120
+            timeout: 600
       
       # - name: Configure EC2 Instance.
       #   block: 
