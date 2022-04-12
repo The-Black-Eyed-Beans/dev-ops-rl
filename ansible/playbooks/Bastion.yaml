@@ -8,7 +8,7 @@
   vars:
     keypair: RickyLopez
     instance_type: t2.micro
-    image: ami-0c02fb55956c7d316
+    image:  ami-04a50faf2a2ec1901
     wait: yes
     region: us-west-1
     subnet: subnet-082d07aa57fb7951b
