@@ -12,9 +12,7 @@
     wait: yes
     region: us-west-1
     subnet: subnet-082d07aa57fb7951b
-    groups:
-      - default: default
-      - RL-BastHost-SG: RL-BastHost-SG
+    groups: ['default', 'RL-BastHost-SG']
 
   tasks:
 
