@@ -7,4 +7,4 @@ curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/
 chmod +x ./kubectl
 
 #Copy kubectl binary to binary folder.
-cp ./kubectl $HOME/bin/kubectl
+cp ./kubectl /bin/kubectl
