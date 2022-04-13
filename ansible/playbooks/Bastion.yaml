@@ -75,6 +75,7 @@
         - name: Install Terraform.
           yum :
             name: terraform
+          become: true
 
       tags: ['never', 'ec2-configure']
   
