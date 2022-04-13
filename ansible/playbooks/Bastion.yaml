@@ -77,11 +77,14 @@
             name: terraform
           become: true
 
-        - name: Retrieve kubectl.
+        - name: Install kubectl.
           ansible.builtin.shell: kubectl.sh >> kubectl-log.txt
           become: true 
         
-        - name: 
+        - name: Install git.
+          yum :
+            name : git
+          become: true
 
       tags: ['never', 'ec2-configure']
   
