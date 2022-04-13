@@ -92,6 +92,13 @@
           args:
             chdir: dev-ops-rl/ 
 
+        - name: Give execute permissions to kubectl.sh.
+          ansible.builtin.file:
+            path: dev-ops-rl/ansible/playbooks/kubectl.sh
+            owner: root
+            group: root
+            mode: '777'
+
         - name: Install kubectl.
           ansible.builtin.shell: .\kubectl.sh >> "$HOME/kubectl-log.txt"
           args:
