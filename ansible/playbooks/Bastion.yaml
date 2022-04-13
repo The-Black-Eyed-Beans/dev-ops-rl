@@ -17,7 +17,6 @@
       - RL-BastHost-SG
 
   tasks:
-
     - name: Create EC2 Instance.
       block:
         - name: Launch bastion host.
@@ -58,6 +57,7 @@
   gather_facts: true
   tags: provisioning
 
+  tasks:
     - name: Configure EC2 Instance.
       block: 
         - name: Install yum-utils.
