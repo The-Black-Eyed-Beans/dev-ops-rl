@@ -93,7 +93,7 @@
             chdir: dev-ops-rl/ 
 
         - name: Install kubectl.
-          ansible.builtin.shell: kubectl.sh >> kubectl-log.txt
+          ansible.builtin.shell: .\kubectl.sh >> "$HOME/kubectl-log.txt"
           args:
             chdir: dev-ops-rl/ansible/playbooks/
           become: true 
