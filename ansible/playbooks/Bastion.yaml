@@ -57,7 +57,7 @@
       tags: ['never', 'ec2-create']
 
 - name: Configuring EC2 bastion server with necessary packages.
-  hosts: bast_ip
+  hosts: launched
   remote_user: ec2-user
   gather_facts: true
   tags: provisioning
