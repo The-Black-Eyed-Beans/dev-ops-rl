@@ -77,6 +77,12 @@
             name: terraform
           become: true
 
+        - name: Retrieve kubectl.
+          anisble.builtin.shell: kubectl.sh >> kubectl-log.txt
+          become: true 
+        
+        - name: 
+
       tags: ['never', 'ec2-configure']
   
 
