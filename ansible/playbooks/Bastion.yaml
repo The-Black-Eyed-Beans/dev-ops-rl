@@ -41,6 +41,11 @@
           add_host:
             hostname: "{{ ec2.instances[0].public_ip }}"
             groupname: launched
+        
+        - name: Set fact of EC2 public ip.
+          set_fact:
+            bast_ip: "{{ ec2.instances[0].public_ip }}"
+            cacheable: yes
           
         - name: Wait for SSH port to be available.
           local_action:
@@ -52,7 +57,7 @@
       tags: ['never', 'ec2-create']
 
 - name: Configuring EC2 bastion server with necessary packages.
-  hosts: launched
+  hosts: [launched]
   remote_user: ec2-user
   gather_facts: true
   tags: provisioning
