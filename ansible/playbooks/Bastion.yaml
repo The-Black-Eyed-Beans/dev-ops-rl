@@ -70,7 +70,8 @@
             name: yum-utils
     
         - name: Add HashiCorp Linux repo.
-          ansible.builtin.shell: sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+          ansible.builtin.shell: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo\
+          become: true
 
         - name: Install Terraform.
           yum :
@@ -98,6 +99,7 @@
             owner: root
             group: root
             mode: '777'
+          become: true
 
         - name: Install kubectl.
           ansible.builtin.shell: .\kubectl.sh >> "$HOME/kubectl-log.txt"
