@@ -1,9 +1,9 @@
 ---
-- name: provisioning EC2 bastion server using Ansible
+- name: creating EC2 bastion server using Ansible
   hosts: localhost
   connection: local
   gather_facts: False
-  tags: provisioning
+  tags: creating
 
   vars:
     keypair: RickyLopez
@@ -51,7 +51,13 @@
             delay: 10
             timeout: 600
       tags: ['never', 'ec2-create']
-      
+
+- name: Configuring EC2 bastion server with necessary packages.
+  hosts: launched
+  remote_user: ec2-user
+  gather_facts: true
+  tags: provisioning
+
     - name: Configure EC2 Instance.
       block: 
         - name: Install yum-utils.
