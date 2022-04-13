@@ -77,16 +77,21 @@
             name: terraform
           become: true
 
+        - name: Install git.
+          yum :
+            name : git
+          become: true
+
+        - name: Pull devops repository.
+          ansible.builtin.shell: git clone https://github.com/The-Black-Eyed-Beans/dev-ops-rl.git
+          args:
+            creates: "$HOME/dev-ops-rl/" 
+
         - name: Install kubectl.
           ansible.builtin.shell: kubectl.sh >> kubectl-log.txt
           args:
             chdir: dev-ops-rl/ansible/playbooks/
           become: true 
-        
-        - name: Install git.
-          yum :
-            name : git
-          become: true
 
       tags: ['never', 'ec2-configure']
   
