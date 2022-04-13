@@ -85,7 +85,12 @@
         - name: Pull devops repository.
           ansible.builtin.shell: git clone https://github.com/The-Black-Eyed-Beans/dev-ops-rl.git
           args:
-            creates: "$HOME/dev-ops-rl/" 
+            creates: "$HOME/dev-ops-rl/"
+
+        - name: Switch to correct branch.
+          ansible.builtin.shell: git checkout features/BA-124-Ansible-Playbooks
+          args:
+            chdir: dev-ops-rl/ 
 
         - name: Install kubectl.
           ansible.builtin.shell: kubectl.sh >> kubectl-log.txt
