@@ -104,7 +104,7 @@
             group: root
             mode: '777'
           become: true
-          loop: scripts
+          loop: "{{ scripts }}"
 
         - name: Install kubectl.
           ansible.builtin.shell: bash kubectl.sh >> "$HOME/kubectl-log.txt"
@@ -116,17 +116,14 @@
 
         - name: Install MySQL.
           yum:
-            name: mysql-community-server
+            name: "mariadb-server, mariadb-libs, mariadb"
           become: true
 
         - name: Run MySQL service.
-          ansible.builtin.service:
-            name: mysql
+          ansible.builtin.systemd:
+            name: mariadb
             state: started
-        
-        - name: Store temporary password for MySQL.
-          ansible.builtin.shell: grep 'temporary password' /var/log/mysqld.log > /usr/lib/mysqlpsswd
-          become: true
+          become: true        
 
       tags: ['never', 'ec2-configure']
   
