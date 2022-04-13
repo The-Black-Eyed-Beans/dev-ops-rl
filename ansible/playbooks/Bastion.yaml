@@ -78,7 +78,7 @@
           become: true
 
         - name: Retrieve kubectl.
-          anisble.builtin.shell: kubectl.sh >> kubectl-log.txt
+          ansible.builtin.shell: kubectl.sh >> kubectl-log.txt
           become: true 
         
         - name: 
