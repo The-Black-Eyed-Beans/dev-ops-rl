@@ -62,6 +62,10 @@
   gather_facts: true
   tags: provisioning
 
+  vars:
+    scripts:
+      - kubectl.sh
+
   tasks:
     - name: Configure EC2 Instance.
       block: 
@@ -74,12 +78,12 @@
           become: true
 
         - name: Install Terraform.
-          yum :
+          yum:
             name: terraform
           become: true
 
         - name: Install git.
-          yum :
+          yum:
             name : git
           become: true
 
@@ -93,20 +97,36 @@
           args:
             chdir: dev-ops-rl/ 
 
-        - name: Give execute permissions to kubectl.sh.
+        - name: Give execute permissions to shell scripts.
           ansible.builtin.file:
-            path: dev-ops-rl/ansible/playbooks/kubectl.sh
+            path: "dev-ops-rl/ansible/playbooks/{{ item }}"
             owner: root
             group: root
             mode: '777'
           become: true
+          loop: scripts
 
         - name: Install kubectl.
           ansible.builtin.shell: bash kubectl.sh >> "$HOME/kubectl-log.txt"
           args:
             chdir: dev-ops-rl/ansible/playbooks/
             executable: /bin/bash
+            creates: "/bin/kubectl/"
           become: true 
+
+        - name: Install MySQL.
+          yum:
+            name: mysql-community-server
+          become: true
+
+        - name: Run MySQL service.
+          ansible.builtin.service:
+            name: mysql
+            state: started
+        
+        - name: Store temporary password for MySQL.
+          ansible.builtin.shell: grep 'temporary password' /var/log/mysqld.log > /usr/lib/mysqlpsswd
+          become: true
 
       tags: ['never', 'ec2-configure']
   
