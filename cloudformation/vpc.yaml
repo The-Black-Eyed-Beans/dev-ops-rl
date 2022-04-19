@@ -1,0 +1,107 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: Template used to create VPC, along with public and private subnets
+
+Metadata:
+
+Parameters:
+  VpcCIDR:
+    Default: 10.90.0.0/16
+    Description: IP range CIDR block for VPC. 
+    Type: String
+  
+  PublicSubnetCIDRBlock:
+    Default: 10.90.1.0/24
+    Description: IP range CIDR block for public subnet.
+    Type: String
+  
+  PrivateSubnetCIDRBlock:
+    Default: 10.90.2.0/24
+    Description: IP range CIDR block for private subnet.
+    Type: String
+
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCIDR
+      EnableDNSHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: RL-CFT-VPC
+  
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: RL-CFT-IGW
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+
+  PublicSubnet: 
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref PublicSubnetCIDRBlock
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: RL-CFT-PublicSubnet
+      VpcId: !Ref VPC
+  
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref PrivateSubnetCIDRBlock
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: RL-CFT-PrivateSubnet
+      VpcId: !Ref VPC
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      Tags:
+        - Key: Name
+          Value: RL-CFT-PublicRouteTable
+      VpcId: !Ref VPC
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref PublicRouteTable
+  
+  PublicSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet
+
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows Public Access for expected ALB.
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1 
+          CidrIp: 0.0.0.0/0
+    Tags:
+      - Key: Name
+        Values: RL-CFT-ALB-SG
+    VpcId: !Ref VPC
+
+
+Outputs:
