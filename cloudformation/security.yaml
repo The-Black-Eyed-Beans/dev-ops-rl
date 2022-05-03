@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+
+Description: Template used to security groups for AWS entities, along with potential IAM roles and policies.
+
+
+Parameters:
+  VpcId:
+    Description: Vpc ID to create security groups for.
+    Type: String
+
+
+Resources:
+
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows Public Access for expected ALB.
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1 
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: RL-CFT-ALB-SG
+      VpcId: !Ref VpcId
+
+  BastionSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows SSH access to one specific secret ip to EC2 Bastion host.
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: '{{resolve:secretsmanager:RLopez_Secret:SecretString:RLopezPersonalIp}}'
+      Tags:
+        - Key: Name
+          Value: RL-CFT-Bastion-SG
+      VpcId: !Ref VpcId
+  
+  PublicAccessSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows public ingress access for deployment.
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: RL-CFT-Public-Access-SG
+      VpcId: !Ref VpcId
+
+
+Outputs:
+
+  ALBSecurityGroupId:
+    Description: ID of the security group used by the application load balancer.
+    Value: !Ref ALBSecurityGroup
+
+  BastionSecurityGroupId:
+    Description: ID of the scurity group used by the bastion host.
+    Value: !Ref BastionSecurityGroup
+  
+  PublicAccessSecurityGroupId:
+    Description: ID of the security group used by nodes for internet-facing public access.
+    Value: !Ref PublicAccessSecurityGroup
+

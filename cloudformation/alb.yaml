@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+
+Description: Template used to create application load balancers, to be used with ECS and EKS clusters.
+
+
+Parameters:
+  ALBSecurityGroupId:
+    Description: ID of the security group to use for the ALB.
+    Type: String
+  
+  PublicSubnet1Id:
+    Description: ID of public subnet 1 to house the ALB.
+    Type: String
+  
+  PublicSubnet2Id:
+    Description: ID of public subnet 2 to house the ALB.
+    Type: String
+    
+
+Resources:
+  FrontendLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      IpAddressType: ipv4
+      Name: RL-CFT-Frontend-LoadBalancer
+      SecurityGroups:
+        - !Ref ALBSecurityGroupId
+      Subnets:
+        - !Ref PublicSubnet1Id
+        - !Ref PublicSubnet2Id
+      Tags:
+        - Key: Name
+          Value: RL-CFT-ALB
+      Type: application
+
+
+Outputs: 
+  FrontendLoadBalancerId:
+    Description: ID of the frontend application load balancer.
+    Value: !Ref FrontendLoadBalancer
+
+  FrontendLoadBalancerDNS:
+    Description: DNS of the frontend application load balancer.
+    Value: !GetAtt FrontendLoadBalancer.DNSName
+  

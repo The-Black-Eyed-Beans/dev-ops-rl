@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: Root template to host and nest all other templates for the infrastructure.
+
+Parameters:
+  DeploymentType:
+    Default: ECS
+    Description: Type of container orchestration for web app deployment.
+    Type: String
+    AllowedValues:
+      - ECS
+      - EKS
+    ConstraintDescription: Must specify either ECS or EKS. 
+
+  VpcCIDR:
+    Default: 10.90.0.0/16
+    Description: IP range CIDR block for VPC. 
+    Type: String
+  
+  PublicSubnet1CIDRBlock:
+    Default: 10.90.1.0/24
+    Description: IP range CIDR block for public subnet 1.
+    Type: String
+  
+  PublicSubnet2CIDRBlock:
+    Default: 10.90.2.0/24
+    Description: IP range CIDR block for public subnet 2.
+    Type: String
+  
+  PrivateSubnet1CIDRBlock:
+    Default: 10.90.3.0/24
+    Description: IP range CIDR block for private subnet 1.
+    Type: String
+  
+  PrivateSubnet2CIDRBlock:
+    Default: 10.90.4.0/24
+    Description: IP range CIDR block for private subnet 2.
+    Type: String
+
+Resources:
+  NetworkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        VpcCIDR: !Ref VpcCIDR
+        PublicSubnet1CIDRBlock: !Ref PublicSubnet1CIDRBlock
+        PublicSubnet2CIDRBlock: !Ref PublicSubnet2CIDRBlock
+        PrivateSubnet1CIDRBlock: !Ref PrivateSubnet1CIDRBlock
+        PrivateSubnet2CIDRBlock: !Ref PrivateSubnet2CIDRBlock
+      TemplateURL: https://rl-cft.s3.us-west-1.amazonaws.com/network.yaml
+  
+  SecurityStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        VpcId: !GetAtt NetworkStack.Outputs.VpcId
+      TemplateURL: https://rl-cft.s3.us-west-1.amazonaws.com/security.yaml
+    DependsOn: NetworkStack
+  
+  ALBStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        ALBSecurityGroupId: !GetAtt SecurityStack.Outputs.ALBSecurityGroupId
+        PublicSubnet1Id: !GetAtt NetworkStack.Outputs.PubSub1Id
+        PublicSubnet2Id: !GetAtt NetworkStack.Outputs.PubSub2Id
+      TemplateURL: https://rl-cft.s3.us-west-1.amazonaws.com/alb.yaml
+    DependsOn:
+      - NetworkStack
+      - SecurityStack
+  
+  DeploymentStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        DeploymentType: !Ref DeploymentType
+        VPCId: !GetAtt NetworkStack.Outputs.VpcId
+        PublicSubnet1Id: !GetAtt NetworkStack.Outputs.PubSub1Id
+        PublicSubnet2Id: !GetAtt NetworkStack.Outputs.PubSub2Id
+        PrivateSubnet1Id: !GetAtt NetworkStack.Outputs.PrivSub1Id
+        PrivateSubnet2Id: !GetAtt NetworkStack.Outputs.PrivSub2Id
+        PublicAccessSecurityGroupId: !GetAtt SecurityStack.Outputs.PublicAccessSecurityGroupId
+      TemplateURL: https://rl-cft.s3.us-west-1.amazonaws.com/deployment.yaml
+    DependsOn:
+      - NetworkStack
+      - SecurityStack

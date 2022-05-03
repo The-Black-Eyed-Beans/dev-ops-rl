@@ -1,0 +1,147 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+
+Description: Template used to deployment static infrastructure of specified container orchestration system.
+
+
+Parameters:
+  DeploymentType:
+    Description: Conditional to determine whether to use ECS or EKS deployment.
+    Default: EKS
+    Type: String
+    AllowedValues:
+      - ECS
+      - EKS
+    ConstraintDescription: Must specify either ECS or EKS.
+  
+  ClusterName:
+    Description: Name of the deployment cluster.
+    Default: RL-CFT-Cluster
+    Type: String
+
+  VPCId:
+    Description: VPC id to house deployment.
+    Type: String
+  
+  PublicSubnet1Id:
+    Description: Public Subnet 1 id.
+    Type: String
+  
+  PublicSubnet2Id:
+    Description: Public Subnet 2 id.
+    Type: String
+  
+  PrivateSubnet1Id:
+    Description: Private Subnet 1 id.
+    Type: String
+  
+  PrivateSubnet2Id:
+    Description: Private Subnet 2 id.
+    Type: String
+
+  PublicAccessSecurityGroupId:
+    Description: Public access security group id.
+    Type: String
+
+
+Conditions:
+  ECS: !Equals
+    - !Ref DeploymentType
+    - ECS
+  
+  EKS: !Equals
+    - !Ref DeploymentType
+    - EKS
+  
+
+Resources:
+  EKSCluster:
+    Condition: EKS
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: !Ref ClusterName
+      Version: "1.20"
+      RoleArn: !Sub
+        - 'arn:aws:iam::${AccountId}:role/RL-eksClusterRole'
+        - AccountId: '{{resolve:secretsmanager:RLopez_Secret:SecretString:RLopezAccountId}}'
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          - !Ref PublicAccessSecurityGroupId
+        SubnetIds:
+          - !Ref PublicSubnet1Id
+          - !Ref PublicSubnet2Id
+          - !Ref PrivateSubnet1Id
+          - !Ref PrivateSubnet2Id
+        EndpointPublicAccess: true
+        EndpointPrivateAccess: true
+      Logging:
+        ClusterLogging:
+          EnabledTypes:
+            - Type: api
+            - Type: audit
+      Tags:
+        - Key: Name
+          Value: RL-CFT-Cluster
+  
+  EKSPublicNodeGroup:
+    Condition: EKS
+    Type: AWS::EKS::Nodegroup
+    Properties:
+      ClusterName: !Ref ClusterName
+      NodeRole: !Sub 
+        - 'arn:aws:iam::${AccountId}:role/RL-eksNodeRole'
+        - AccountId: '{{resolve:secretsmanager:RLopez_Secret:SecretString:RLopezAccountId}}'
+      ScalingConfig:
+        MinSize: 1
+        DesiredSize: 1
+        MaxSize: 1
+      RemoteAccess:
+        Ec2SshKey: '{{resolve:secretsmanager:RLopez_Secret:SecretString:RLopezSSHKey}}'
+      Subnets:
+        - !Ref PublicSubnet1Id
+        - !Ref PublicSubnet2Id
+      UpdateConfig:
+        MaxUnavailablePercentage: 50
+    DependsOn:
+      - EKSCluster
+  
+  EKSPrivateNodeGroup:
+    Condition: EKS
+    Type: AWS::EKS::Nodegroup
+    Properties:
+      ClusterName: !Ref ClusterName
+      NodeRole: !Sub
+        - 'arn:aws:iam::${AccountId}:role/RL-eksNodeRole'
+        - AccountId: '{{resolve:secretsmanager:RLopez_Secret:SecretString:RLopezAccountId}}'
+      ScalingConfig:
+        MinSize: 1
+        DesiredSize: 2
+        MaxSize: 2
+      RemoteAccess:
+        Ec2SshKey: '{{resolve:secretsmanager:RLopez_Secret:SecretString:RLopezSSHKey}}'
+      Subnets:
+        - !Ref PrivateSubnet1Id
+        - !Ref PrivateSubnet2Id
+      UpdateConfig:
+        MaxUnavailablePercentage: 50
+    DependsOn: EKSCluster
+
+  ECSCluster:
+    Condition: ECS
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Ref ClusterName
+      CapacityProviders:
+        - FARGATE
+
+Outputs:
+  CertificateAuthority:
+    Condition: EKS
+    Description: Certificate authority of the EKS cluster.
+    Value: !GetAtt EKSCluster.CertificateAuthorityData
+
+  EKSEndpoint:
+    Condition: EKS
+    Description: Endpoint to access the EKS API server.
+    Value: !GetAtt EKSCluster.Endpoint
+  
